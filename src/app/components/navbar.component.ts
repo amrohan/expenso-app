@@ -7,7 +7,7 @@ import { ThemeService } from '../services/theme.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex justify-between w-full items-center">
+    <div class="flex justify-between w-full items-center p-2">
       <div class="flex justify-end items-center w-full">
         @if (themeService.isDarkMode()) {
           <button (click)="themeService.setDarkMode(!themeService.isDarkMode())" class="rounded-full p-1 dark:hover:bg-zinc-700" >
