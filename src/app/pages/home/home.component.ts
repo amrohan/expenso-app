@@ -23,17 +23,17 @@ export class transaction {
 export class HomeComponent {
   data: transaction[] = [
     {
-      _id: "abc9012",
-      title: 'Burger',
+      _id: "1",
+      title: 'Salary',
       categoryId: 'Food',
-      amount: 100,
+      amount: 269,
       date: new Date(),
       userId: '1',
       type: 'income',
       accountId: 'Kotak'
     },
     {
-      _id: "abc9022",
+      _id: "2",
       title: 'Pizza',
       categoryId: 'Food',
       amount: 100,
@@ -42,7 +42,7 @@ export class HomeComponent {
       type: 'expense',
       accountId: 'Paytm'
     }, {
-      _id: "XXXXXXX",
+      _id: "3",
       title: 'Shawrma',
       categoryId: 'Food',
       amount: 100,
@@ -50,7 +50,18 @@ export class HomeComponent {
       userId: '1',
       type: 'expense',
       accountId: 'Paytm'
-    }
+    },
+    {
+      _id: "4",
+      title: 'Metro',
+      categoryId: 'Transportation',
+      amount: 30,
+      date: new Date(),
+      userId: '1',
+      type: 'expense',
+      accountId: 'Paytm'
+    },
+
 
   ]
 

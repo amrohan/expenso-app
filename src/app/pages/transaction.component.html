@@ -1,1 +1,142 @@
-<p>transaction works!</p>
+<app-layout>
+  <section
+    class="h-screen w-full max-w-5xl mx-auto p-2 rounded-md overflow-x-hidden animate-fade-left animate-duration-500 animate-ease-in-out"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+      <!-- Back Icon -->
+      <a routerLink="/">
+        <div class="p-2 bg-slate-200 dark:bg-zinc-800 rounded-full">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 -960 960 960"
+            width="24"
+            class="h-6 w-6 fill-current dark:text-zinc-200"
+          >
+            <path
+              d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+            />
+          </svg>
+        </div>
+      </a>
+      <!-- Trash Icon -->
+      <div class="p-2 bg-slate-200 dark:bg-zinc-800 rounded-full">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          class="h-6 w-6 fill-current text-red-500 cursor-pointer"
+        >
+          <path
+            d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+          />
+        </svg>
+      </div>
+    </div>
+    <!-- Transaction Form content -->
+    <main class="h-full p-4 mx-auto w-full">
+      <form (ngSubmit)="onSubmit()" #form="ngForm" class="ml-2">
+        <!-- Title -->
+        <div class="mt-2">
+          <input
+            type="text"
+            placeholder="Untitled"
+            class="bg-transparent w-full border-0 text-3xl border-zinc-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
+          />
+        </div>
+        <!-- Category -->
+        <div class="mt-4">
+          <button
+            (click)="showCategory = !showCategory"
+            type="button"
+            class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              viewBox="0 -960 960 960"
+              width="24"
+              class="fill-current h-5 w-5"
+            >
+              <path
+                d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"
+              />
+            </svg>
+
+            Category
+          </button>
+        </div>
+        <!-- Amount -->
+        <div class="mt-4"></div>
+      </form>
+    </main>
+  </section>
+
+  <!-- Add Category Form -->
+  <section
+    *ngIf="showCategory"
+    class="dark:bg-zinc-900 fixed bottom-0 h-[60%] w-full bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
+  >
+    <div class="p-3 flex justify-between items-center">
+      <h1 class="text-xl dark:text-slate-200 mt-1">Choose category</h1>
+    </div>
+    <div
+      class="h-fit w-full p-3 flex justify-start items-start gap-3 flex-wrap"
+    >
+      @for (category of categoryList; track category._id) {
+      <button
+        (click)="showCategory = !showCategory"
+        type="button"
+        class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
+      >
+        <span class="material-symbols-outlined fill-current">
+          {{ category.icon }}
+        </span>
+        {{ category.name }}
+      </button>
+      }@empty {
+      <p class="dark:text-zinc-300">No category yet...</p>
+      }
+      <!-- Add new -->
+      <button
+        (click)="showCategory = !showCategory"
+        type="button"
+        class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
+      >
+        <span class="material-symbols-outlined"> add </span>
+        Add new
+      </button>
+    </div>
+    <!-- Bottom Menu -->
+    <div class="fixed bottom-0 left-2 h-14 w-full">
+      <div class="flex justify-between items-center w-full h-full">
+        <!-- Back Icon -->
+        <div class="p-2 bg-slate-200 dark:bg-zinc-800 rounded-full">
+          <svg
+            (click)="showCategory = !showCategory"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 -960 960 960"
+            width="24"
+            class="h-6 w-6 fill-current dark:text-zinc-200 cursor-pointer"
+          >
+            <path
+              d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+            />
+          </svg>
+        </div>
+        <div class="p-2 mt-2">
+          <button
+            (click)="showCategory = !showCategory"
+            type="button"
+            class="text-white bg-zinc-700 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-zinc-700"
+          >
+            Skip
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</app-layout>
