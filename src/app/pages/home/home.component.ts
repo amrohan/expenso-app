@@ -1,6 +1,7 @@
 import { Component, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from '../../components/layout.component';
+import { RouterLink } from '@angular/router';
 
 export class transaction {
   _id: string
@@ -16,7 +17,7 @@ export class transaction {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, LayoutComponent],
+  imports: [CommonModule, LayoutComponent, RouterLink],
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
@@ -38,7 +39,16 @@ export class HomeComponent {
       amount: 100,
       date: new Date(),
       userId: '1',
-      type: 'income',
+      type: 'expense',
+      accountId: 'Paytm'
+    }, {
+      _id: "XXXXXXX",
+      title: 'Shawrma',
+      categoryId: 'Food',
+      amount: 100,
+      date: new Date(),
+      userId: '1',
+      type: 'expense',
       accountId: 'Paytm'
     }
 

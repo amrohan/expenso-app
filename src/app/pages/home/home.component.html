@@ -57,16 +57,18 @@
     <main class="max-h-[28rem] min-h-[28rem] p-3 overflow-scroll">
       @for (item of data; track $index) {
       <div
-        class="w-full mt-2 flex items-center max-h-16 dark:bg-zinc-950 dark:text-slate-100 rounded-md shadow-sm border border-gray-300 dark:border-zinc-800"
+        [routerLink]="['/transaction', item._id]"
+        routerLinkActive="active"
+        class="cursor-pointer w-full mt-2 flex items-center max-h-16 dark:bg-zinc-950 dark:text-slate-100 rounded-md shadow-sm border border-gray-300 dark:border-zinc-800"
       >
         <!-- Name -->
-        <div class="flex flex-col justify-center items-start h-full p-3 w-7/12">
+        <div class="flex flex-col justify-center items-start h-full p-3 w-8/12">
           <p class="text-base">{{ item.title }}</p>
           <p class="text-[11px] dark:text-slate-300">{{ item.categoryId }}</p>
         </div>
         <!-- Amounts -->
         <div class="w-4/12 flex flex-col justify-center items-end p-3">
-          @if ($index%2===0) {
+          @if (item.type==='income') {
           <p class="text-sm text-green-700">+${{ item.amount }}</p>
           }@else {
           <p class="text-sm text-red-700">-${{ item.amount }}</p>
@@ -76,7 +78,7 @@
           </p>
         </div>
         <!-- Menu -->
-        <div class="w-1/12 flex flex-col justify-center items-end h-full p-3">
+        <!-- <div class="w-1/12 flex flex-col justify-center items-end h-full p-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24"
@@ -89,7 +91,7 @@
               d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"
             />
           </svg>
-        </div>
+        </div> -->
       </div>
       }@empty {
       <div class="h-[300px] w-full grid place-content-center">

@@ -7,7 +7,7 @@ import { NavbarComponent } from './navbar.component';
   standalone: true,
   imports: [CommonModule, NavbarComponent],
   template: `
-  <section class="dark:bg-black dark:text-slate-50 bg-white h-full w-full">
+  <section class="dark:bg-black dark:text-slate-50 bg-white h-screen w-full">
     <div class="max-w-5xl mx-auto">
       <app-navbar></app-navbar>
       <ng-content></ng-content>
