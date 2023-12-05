@@ -25,6 +25,7 @@ export class DialogComponent implements OnInit {
   @Output() confrimDialogEvent: EventEmitter<boolean> = new EventEmitter()
   @Output() openIconDialogEvent: EventEmitter<boolean> = new EventEmitter()
   @Output() iconSelectEvent: EventEmitter<string> = new EventEmitter()
+  @Output() iconCloseEvent: EventEmitter<boolean> = new EventEmitter()
 
   // vars
   iconList$: Observable<any>;
@@ -55,6 +56,10 @@ export class DialogComponent implements OnInit {
     this.iconSelectEvent.emit(value);
     this.isIconOpen = false;
   }
+  onIconClose(value: boolean) {
+    this.iconCloseEvent.emit(value);
+  }
+
 
 
 }

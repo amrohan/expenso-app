@@ -79,7 +79,6 @@ export class TransactionComponent {
   }
 
   onSubmit() {
-    console.log('submit');
   }
   onDialogClose(value: boolean) {
     value ? this.iscreateCategory = false : this.iscreateCategory = true;
@@ -97,6 +96,10 @@ export class TransactionComponent {
 
   onIconOpen(value: string) {
     this.isIconOpen = true;
+  }
+  onIconClose(value: boolean) {
+    this.isIconOpen = !this.isIconOpen;
+    this.selectedIcon = 'category'
   }
 
   // categoryList: category[] = []
