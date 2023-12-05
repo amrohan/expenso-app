@@ -1,0 +1,96 @@
+<!-- Add Modal -->
+<section
+  *ngIf="isDialogOpen"
+  [ngClass]="zIndex"
+  class="dark:bg-zinc-900 fixed bottom-0 h-[16rem] w-full md:w-[64rem] bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
+>
+  <div class="p-3 flex justify-between items-center">
+    <h1 class="text-xl dark:text-slate-200 mt-1">{{ title }}</h1>
+  </div>
+  <!-- Create Category chips -->
+
+  <ng-content></ng-content>
+  <!-- Bottom Menu -->
+  <div class="fixed bottom-5 left-2 h-14 w-full">
+    <div class="flex justify-between items-center w-full h-full">
+      <!-- Back Icon -->
+      <div class="p-2 bg-slate-200 dark:bg-zinc-800 rounded-full">
+        <svg
+          (click)="closeDialog(true)"
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 -960 960 960"
+          width="24"
+          class="h-6 w-6 fill-current dark:text-zinc-200 cursor-pointer"
+        >
+          <path
+            d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+          />
+        </svg>
+      </div>
+      <div class="p-2 mt-2">
+        <button
+          (click)="onConfrimDialog(true)"
+          type="button"
+          [ngClass]="btnColor ? '' : 'text-white bg-zinc-700 dark:bg-zinc-700'"
+          class="font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2"
+        >
+          {{ btnName ? btnName : "Save" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-container *ngIf="isIconOpen">
+  <section
+    class="dark:bg-zinc-900 z-40 fixed bottom-0 h-[70%] w-full md:w-[64rem] bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
+  >
+    <div class="p-3 flex justify-between items-center">
+      <h1 class="text-xl dark:text-slate-200 mt-1">Choose icon</h1>
+    </div>
+    <!-- Choose chips -->
+
+    <div
+      class="w-80 mx-auto grid grid-rows-0 grid-cols-6 gap-2 place-content-between place-items-center-content-center h-[24rem] overflow-scroll"
+    >
+      @for (item of iconList$ |async; track $index) {
+      <button
+        (click)="onIoncSelect(item)"
+        class="w-10 h-10 overflow-hidden font-bold text-gray-700 dark:text-gray-300 grid place-content-center rounded-full border dark:border-zinc-700"
+      >
+        <span class="material-symbols-outlined">{{ item }}</span>
+      </button>
+      }
+    </div>
+    <!-- Bottom Menu -->
+    <div class="fixed bottom-5 left-2 h-14 w-full">
+      <div class="flex justify-between items-center w-full h-full">
+        <!-- Back Icon -->
+        <div class="p-2 bg-slate-200 dark:bg-zinc-800 rounded-full">
+          <svg
+            (click)="closeDialog(true)"
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 -960 960 960"
+            width="24"
+            class="h-6 w-6 fill-current dark:text-zinc-200 cursor-pointer"
+          >
+            <path
+              d="m291-240-51-51 189-189-189-189 51-51 189 189 189-189 51 51-189 189 189 189-51 51-189-189-189 189Z"
+            />
+          </svg>
+        </div>
+        <div class="p-2 mt-2">
+          <button
+            (click)="onConfrimDialog(true)"
+            type="button"
+            class="font-medium rounded-full dark:bg-emerald-700 dark:text-zinc-300 text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+            Select
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</ng-container>

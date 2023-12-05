@@ -126,7 +126,7 @@
   <!-- Add Category Form -->
   <section
     *ngIf="showCategory"
-    class="dark:bg-zinc-900 z-20 fixed bottom-0 h-[80%] w-full bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
+    class="dark:bg-zinc-900 z-20 fixed md:w-[64rem] bottom-0 h-[80%] w-full bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
   >
     <div class="p-3 flex justify-between items-center">
       <h1 class="text-xl dark:text-slate-200 mt-1">Choose category</h1>
@@ -178,7 +178,7 @@
 
       <!-- Add new -->
       <button
-        (click)="showCategory = !showCategory"
+        (click)="iscreateCategory = !iscreateCategory"
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
@@ -219,7 +219,7 @@
 
   <!-- Add Account Popup -->
   <section
-    class="dark:bg-zinc-900 z-10 fixed bottom-0 h-[40%] w-full bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
+    class="dark:bg-zinc-900 z-10 fixed bottom-0 h-[16rem] w-full md:w-[64rem] bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
   >
     <div class="p-3 flex justify-between items-center">
       <h1 class="text-xl dark:text-slate-200 mt-1">Account</h1>
@@ -327,7 +327,7 @@
 
   <section
     *ngIf="showMoneyDialogue"
-    class="dark:bg-zinc-900 z-30 fixed bottom-0 h-[80%] w-full bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
+    class="dark:bg-zinc-900 z-30 fixed md:w-[64rem] bottom-0 h-[80%] w-full bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2 animate-fade-up animate-duration-[400ms] animate-ease-in-out"
   >
     <div class="p-3 flex justify-between items-center">
       <h1 class="text-xl dark:text-slate-200 mt-1">Account</h1>
@@ -508,4 +508,36 @@
       </div>
     </div>
   </section>
+
+  <!-- Create Category -->
+
+  <app-dialog
+    title="Create Category"
+    btnName="Add"
+    zIndex="z-30"
+    [isIconOpen]="isIconOpen"
+    [isDialogOpen]="iscreateCategory"
+    (closeDialogEvent)="onDialogClose($event)"
+    (confrimDialogEvent)="onDialogConfirm($event)"
+  >
+    <div class="">
+      <div class="w-56 mx-auto h-full flex items-center mt-10 gap-2">
+        <button
+          type="button"
+          class="dark:bg-zinc-700 dark:text-zinc-300 border dark:border-zinc-600 rounded-full p-2 w-10 h-10"
+        >
+          <span
+            class="material-symbols-outlined dark:text-zinc-300 text-gray-800"
+          >
+            category
+          </span>
+        </button>
+        <input
+          type="text"
+          placeholder="Enter name"
+          class="bg-transparent w-full border-0 text-2xl border-zinc-800 dark:text-zinc-300 text-gray-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
+        />
+      </div>
+    </div>
+  </app-dialog>
 </app-layout>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LayoutComponent } from '../components/layout.component';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DialogComponent } from '../components/dialog.component';
 
 
 export interface category {
@@ -22,7 +23,7 @@ export interface account {
 @Component({
   selector: 'app-transaction',
   standalone: true,
-  imports: [CommonModule, LayoutComponent, RouterLink, FormsModule],
+  imports: [CommonModule, LayoutComponent, DialogComponent, RouterLink, FormsModule],
   templateUrl: './transaction.component.html',
   styles: ``
 })
@@ -30,6 +31,9 @@ export class TransactionComponent {
   showCategory: boolean = false
   date: Date = new Date();
   showMoneyDialogue: boolean = false
+  iscreateCategory: boolean = true
+  isIconOpen: boolean = true
+
   selectedCategory: category | null = {
     _id: '2',
     name: ' Transportation',
@@ -76,6 +80,16 @@ export class TransactionComponent {
   onSubmit() {
     console.log('submit');
   }
+  onDialogClose(value: boolean) {
+    value ? this.iscreateCategory = false : this.iscreateCategory = true;
+
+  }
+
+  onDialogConfirm(value: boolean) {
+    // React to the dialog being confirmed
+    console.log('Dialog confirmed with value: ', value);
+  }
+
 
   // categoryList: category[] = []
   categoryList: category[] = [
