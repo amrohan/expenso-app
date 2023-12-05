@@ -32,7 +32,8 @@ export class TransactionComponent {
   date: Date = new Date();
   showMoneyDialogue: boolean = false
   iscreateCategory: boolean = true
-  isIconOpen: boolean = true
+  isIconOpen: boolean = false;
+  selectedIcon: string = 'category';
 
   selectedCategory: category | null = {
     _id: '2',
@@ -90,6 +91,13 @@ export class TransactionComponent {
     console.log('Dialog confirmed with value: ', value);
   }
 
+  onIconSelect(value: string) {
+    this.selectedIcon = value;
+  }
+
+  onIconOpen(value: string) {
+    this.isIconOpen = true;
+  }
 
   // categoryList: category[] = []
   categoryList: category[] = [

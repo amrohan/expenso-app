@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconService } from '../services/icon.service';
 import { Observable } from 'rxjs';
@@ -17,12 +17,14 @@ export class DialogComponent implements OnInit {
   @Input() btnColor: string;
   @Input() zIndex: string;
   // Icons
-  @Input() isIconOpen: boolean = true;
+  @Input() isIconOpen: boolean = false;
+
 
 
   @Output() closeDialogEvent: EventEmitter<boolean> = new EventEmitter()
   @Output() confrimDialogEvent: EventEmitter<boolean> = new EventEmitter()
   @Output() openIconDialogEvent: EventEmitter<boolean> = new EventEmitter()
+  @Output() iconSelectEvent: EventEmitter<string> = new EventEmitter()
 
   // vars
   iconList$: Observable<any>;
@@ -31,10 +33,10 @@ export class DialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.isIconOpen) {
-      this.iconList$ = this.iconService.getIcons()
-    }
+    this.iconList$ = this.iconService.getIcons()
   }
+
+
 
   closeDialog(value: boolean) {
     this.closeDialogEvent.emit(true);
@@ -50,7 +52,9 @@ export class DialogComponent implements OnInit {
   }
 
   onIoncSelect(value: string) {
-    console.log("🚀 ~ file: dialog.component.ts:53 ~ DialogComponent ~ onIoncSelect ~ value:", value)
-
+    this.iconSelectEvent.emit(value);
+    this.isIconOpen = false;
   }
+
+
 }

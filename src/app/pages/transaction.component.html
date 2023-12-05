@@ -519,17 +519,19 @@
     [isDialogOpen]="iscreateCategory"
     (closeDialogEvent)="onDialogClose($event)"
     (confrimDialogEvent)="onDialogConfirm($event)"
+    (iconSelectEvent)="onIconSelect($event)"
   >
     <div class="">
       <div class="w-56 mx-auto h-full flex items-center mt-10 gap-2">
         <button
+          (click)="isIconOpen = !isIconOpen"
           type="button"
-          class="dark:bg-zinc-700 dark:text-zinc-300 border dark:border-zinc-600 rounded-full p-2 w-10 h-10"
+          class="dark:bg-zinc-700 dark:text-zinc-300 grid place-content-center border dark:border-zinc-600 rounded-full p-2 w-10 h-10"
         >
           <span
             class="material-symbols-outlined dark:text-zinc-300 text-gray-800"
           >
-            category
+            {{ selectedIcon }}
           </span>
         </button>
         <input
