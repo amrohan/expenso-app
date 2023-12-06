@@ -178,7 +178,7 @@
 
       <!-- Add new -->
       <button
-        (click)="iscreateCategory = !iscreateCategory"
+        (click)="isCreateCategory = !isCreateCategory"
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
@@ -273,7 +273,7 @@
 
       <!-- Add new -->
       <button
-        (click)="showCategory = !showCategory"
+        (click)="isCreateAcccount = !isCreateAcccount"
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5 min-w-[8rem]"
       >
@@ -516,7 +516,7 @@
     btnName="Add"
     zIndex="z-30"
     [isIconOpen]="isIconOpen"
-    [isDialogOpen]="iscreateCategory"
+    [isDialogOpen]="isCreateCategory"
     (closeDialogEvent)="onDialogClose($event)"
     (confrimDialogEvent)="onDialogConfirm($event)"
     (iconSelectEvent)="onIconSelect($event)"
@@ -537,10 +537,48 @@
         </button>
         <input
           type="text"
+          [(ngModel)]="category.name"
+          name="name"
           placeholder="Enter name"
           class="bg-transparent w-full border-0 text-2xl border-zinc-800 dark:text-zinc-300 text-gray-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
         />
       </div>
     </div>
+  </app-dialog>
+
+  <!-- Create Account -->
+  <app-dialog
+    title="Create Account"
+    btnName="Add"
+    zIndex="z-30"
+    [isIconOpen]="isIconOpen"
+    [isDialogOpen]="isCreateAcccount"
+    (closeDialogEvent)="onAccountDialogClose($event)"
+    (confrimDialogEvent)="onAccountDialogConfirm($event)"
+    (iconSelectEvent)="onIconSelect($event)"
+    (iconCloseEvent)="onAccountIconClose($event)"
+  >
+    <main>
+      <div class="w-56 mx-auto h-full flex items-center mt-10 gap-2">
+        <button
+          (click)="isIconOpen = !isIconOpen"
+          type="button"
+          class="dark:bg-zinc-700 dark:text-zinc-300 grid place-content-center border dark:border-zinc-600 rounded-full p-2 w-10 h-10"
+        >
+          <span
+            class="material-symbols-outlined dark:text-zinc-300 text-gray-800"
+          >
+            {{ selectedIcon }}
+          </span>
+        </button>
+        <input
+          type="text"
+          [(ngModel)]="account.name"
+          name="name"
+          placeholder="Enter name"
+          class="bg-transparent w-full border-0 text-2xl border-zinc-800 dark:text-zinc-300 text-gray-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
+        />
+      </div>
+    </main>
   </app-dialog>
 </app-layout>

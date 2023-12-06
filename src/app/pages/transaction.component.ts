@@ -6,13 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../components/dialog.component';
 
 
-export interface category {
+export class Category {
   _id: string;
   name: string;
   icon: string
   userId: string;
 }
-export interface account {
+export class account {
   _id: string;
   name: string;
   icon: string;
@@ -31,17 +31,22 @@ export class TransactionComponent {
   showCategory: boolean = false
   date: Date = new Date();
   showMoneyDialogue: boolean = false
-  iscreateCategory: boolean = true
+  isCreateCategory: boolean = false
+  isCreateAcccount: boolean = false
   isIconOpen: boolean = false;
   selectedIcon: string = 'category';
 
-  selectedCategory: category | null = {
+  category: Category = new Category()
+  account: account = new account()
+
+
+  selectedCategory: Category | null = {
     _id: '2',
     name: ' Transportation',
     icon: 'train',
     userId: '1'
   }
-  selectedAccount: category | null = {
+  selectedAccount: Category | null = {
     _id: '1',
     name: 'Kotak',
     icon: 'account_balance',
@@ -51,6 +56,7 @@ export class TransactionComponent {
 
   // Calculater number
   countNumber = signal('')
+
 
   updateNumber(number: string) {
     if (number === '.' && this.countNumber().includes('.')) {
@@ -80,18 +86,48 @@ export class TransactionComponent {
 
   onSubmit() {
   }
-  onDialogClose(value: boolean) {
-    value ? this.iscreateCategory = false : this.iscreateCategory = true;
 
+
+  // Acccount
+  onAccountDialogClose(value: boolean) {
+    value ? this.isCreateAcccount = false : this.isCreateAcccount = true;
+  }
+
+  onAccountDialogConfirm(value: boolean) {
+    // React to the dialog being confirmed
+    console.log('Dialog confirmed with value: ', value);
+    console.log(this.account);
+    this.isCreateAcccount = !this.isCreateAcccount
+  }
+
+  onAccountIconOpen(value: string) {
+    this.isIconOpen = true;
+  }
+  onAccountIconClose(value: boolean) {
+    this.isIconOpen = !this.isIconOpen;
+  }
+
+
+  onDialogClose(value: boolean) {
+    value ? this.isCreateCategory = false : this.isCreateCategory = true;
   }
 
   onDialogConfirm(value: boolean) {
     // React to the dialog being confirmed
     console.log('Dialog confirmed with value: ', value);
+    console.log(this.category);
+    this.isCreateCategory = !this.isCreateCategory
   }
+
+
+
+  // Icons Emitters
 
   onIconSelect(value: string) {
     this.selectedIcon = value;
+    console.log("🚀 ~ file: transaction.component.ts:132 ~ TransactionComponent ~ onIconSelect ~ this.selectedIcon:", this.selectedIcon)
+    this.category.icon = value
+    this.account.icon = value
   }
 
   onIconOpen(value: string) {
@@ -99,11 +135,10 @@ export class TransactionComponent {
   }
   onIconClose(value: boolean) {
     this.isIconOpen = !this.isIconOpen;
-    this.selectedIcon = 'category'
   }
 
   // categoryList: category[] = []
-  categoryList: category[] = [
+  categoryList: Category[] = [
     {
       _id: '1',
       name: ' Food & Drinks',

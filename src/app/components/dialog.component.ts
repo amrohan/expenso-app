@@ -26,10 +26,11 @@ export class DialogComponent implements OnInit {
   @Output() openIconDialogEvent: EventEmitter<boolean> = new EventEmitter()
   @Output() iconSelectEvent: EventEmitter<string> = new EventEmitter()
   @Output() iconCloseEvent: EventEmitter<boolean> = new EventEmitter()
+  @Output() iconConfirmEvent: EventEmitter<boolean> = new EventEmitter()
 
   // vars
   iconList$: Observable<any>;
-
+  selectedIcon: string;
   iconService = inject(IconService);
 
 
@@ -44,18 +45,25 @@ export class DialogComponent implements OnInit {
   }
 
   onConfrimDialog(value: boolean) {
-    this.confrimDialogEvent.emit(true);
+    this.confrimDialogEvent.emit(value);
   }
+
 
   openIconDialog(value: boolean) {
     this.openIconDialogEvent.emit(true);
     this.iconList$ = this.iconService.getIcons()
   }
 
-  onIoncSelect(value: string) {
-    this.iconSelectEvent.emit(value);
-    this.isIconOpen = false;
+  onIconSelect(value: string) {
+    this.selectedIcon = value;
   }
+
+  onConfirmIconSelect(value: boolean) {
+    this.iconSelectEvent.emit(this.selectedIcon);
+    this.iconCloseEvent.emit(value)
+    this.iconConfirmEvent.emit(value)
+  }
+
   onIconClose(value: boolean) {
     this.iconCloseEvent.emit(value);
   }

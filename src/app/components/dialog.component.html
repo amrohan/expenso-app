@@ -56,8 +56,13 @@
     >
       @for (item of iconList$ |async; track $index) {
       <button
-        (click)="onIoncSelect(item)"
-        class="w-10 h-10 overflow-hidden font-bold text-gray-700 dark:text-gray-300 grid place-content-center rounded-full border dark:border-zinc-700"
+        (click)="onIconSelect(item)"
+        [ngClass]="
+          selectedIcon === item
+            ? 'dark:border-gray-100 dark:bg-zinc-700 bg-zinc-300 border-zinc-700 '
+            : ''
+        "
+        class="w-10 h-10 overflow-hidden font-bold text-gray-700 dark:text-gray-300 grid place-content-center rounded-full border dark:border-zinc-700 border-zinc-400"
       >
         <span class="material-symbols-outlined">{{ item }}</span>
       </button>
@@ -83,9 +88,9 @@
         </div>
         <div class="p-2 mt-2">
           <button
-            (click)="onConfrimDialog(true)"
+            (click)="onConfirmIconSelect(true)"
             type="button"
-            class="font-medium rounded-full dark:bg-emerald-700 dark:text-zinc-300 text-sm px-5 py-2.5 text-center me-2 mb-2"
+            class="font-medium rounded-full bg-zinc-700 text-zinc-100 dark:bg-emerald-700 dark:text-zinc-300 text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             Select
           </button>
