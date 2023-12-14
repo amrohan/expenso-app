@@ -1,11 +1,11 @@
-type Category = {
+export type Category = {
   id: string;
   title: string;
   imageUrl: string;
   userId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   deletedAt?: Date | null;
-  isDeleted: boolean;
-  isActive: boolean;
+  isDeleted?: boolean;
+  isActive?: boolean;
 };

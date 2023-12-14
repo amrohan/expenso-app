@@ -51,7 +51,7 @@
           <button
             (click)="showCategory = !showCategory"
             type="button"
-            class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
+            class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-500 font-medium rounded-lg text-sm px-4 p-1.5"
           >
             @if (selectedCategory==null) {
             <svg
@@ -67,9 +67,9 @@
             </svg>
             Add Category }@else{
             <span class="material-symbols-outlined">{{
-              selectedCategory.icon
+              selectedCategory.imageUrl
             }}</span>
-            {{ selectedCategory.name }}
+            {{ selectedCategory.title }}
             <span class="material-symbols-outlined"> chevron_right </span>
             }
           </button>
@@ -134,29 +134,32 @@
     <div
       class="h-fit w-full p-3 flex justify-start items-start gap-3 flex-wrap"
     >
-      @for (category of categoryList; track category._id) { @if (category &&
+      @for (category of categoryList; track category.id) { @if (category &&
       selectedCategory) {
       <button
-        (click)="showCategory = !showCategory"
+        (click)="chooseCategory(category)"
         type="button"
         [ngClass]="
-          category!._id === selectedCategory!._id
+          category!.id === selectedCategory!.id
             ? 'dark:bg-zinc-800 bg-slate-200 border-none'
             : ''
         "
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
         <span class="material-symbols-outlined fill-current">
-          {{ category.icon }}
+          {{ category.imageUrl }}
         </span>
         <p class="mr-2">
-          {{ category.name }}
+          {{ category.title }}
         </p>
-        @if (category._id ===selectedCategory._id) {
-        <span class="material-symbols-outlined rounded-md dark:text-white">
+        <!-- @if (category.id ===selectedCategory.id) {
+        <span
+          class="material-symbols-outlined rounded-md dark:text-white z-40"
+          (click)="removeCategory(category)"
+        >
           close
         </span>
-        }
+        } -->
       </button>
 
       }@else{
@@ -166,10 +169,10 @@
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
         <span class="material-symbols-outlined fill-current">
-          {{ category.icon }}
+          {{ category.imageUrl }}
         </span>
         <p class="mr-2">
-          {{ category.name }}
+          {{ category.title }}
         </p>
       </button>
       } }@empty {
@@ -229,42 +232,42 @@
     <div
       class="h-fit w-full p-3 flex justify-start items-start gap-3 overflow-scroll no-scrollbar"
     >
-      @for (account of accountList; track account._id) { @if (account &&
+      @for (account of accountList; track account.id) { @if (account &&
       selectedAccount) {
       <button
-        (click)="showCategory = !showCategory"
+        (click)="chooseAccount(account)"
         type="button"
         [ngClass]="
-          account!._id === selectedAccount!._id
+          account!.id === selectedAccount!.id
             ? 'dark:bg-zinc-800 bg-slate-200 border-none'
             : ''
         "
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
         <span class="material-symbols-outlined fill-current">
-          {{ account.icon }}
+          {{ account.imageUrl }}
         </span>
         <p class="mr-2">
-          {{ account.name }}
+          {{ account.title }}
         </p>
-        @if (account._id ===selectedAccount._id) {
+        <!-- @if (account.id ===selectedAccount.id) {
         <span class="material-symbols-outlined rounded-md dark:text-white">
           close
         </span>
-        }
+        } -->
       </button>
 
       }@else{
       <button
-        (click)="showCategory = !showCategory"
+        (click)="chooseAccount(account)"
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
         <span class="material-symbols-outlined fill-current">
-          {{ account.icon }}
+          {{ account.imageUrl }}
         </span>
         <p class="mr-2">
-          {{ account.name }}
+          {{ account.title }}
         </p>
       </button>
       } }@empty {
@@ -296,7 +299,7 @@
     <!-- Bottom Menu -->
     <div class="fixed bottom-5 left-2 h-14 w-full">
       <div class="flex justify-end items-center w-full h-full">
-        <!-- Back Icon -->
+        <!-- Back imageUrl -->
         <!-- <div class="p-2 bg-slate-200 dark:bg-zinc-800 rounded-full">
           <svg
             (click)="showCategory = !showCategory"
@@ -336,25 +339,25 @@
     <div
       class="h-fit w-full p-3 flex justify-start items-start gap-3 overflow-scroll no-scrollbar"
     >
-      @for (account of accountList; track account._id) { @if (account &&
+      @for (account of accountList; track account.id) { @if (account &&
       selectedAccount) {
       <button
         (click)="showCategory = !showCategory"
         type="button"
         [ngClass]="
-          account!._id === selectedAccount!._id
+          account!.id === selectedAccount!.id
             ? 'dark:bg-zinc-800 bg-slate-200 border-none'
             : ''
         "
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
         <span class="material-symbols-outlined fill-current">
-          {{ account.icon }}
+          {{ account.imageUrl }}
         </span>
         <p class="mr-2">
-          {{ account.name }}
+          {{ account.title }}
         </p>
-        @if (account._id ===selectedAccount._id) {
+        @if (account.id ===selectedAccount.id) {
         <span class="material-symbols-outlined rounded-md dark:text-white">
           close
         </span>
@@ -368,10 +371,10 @@
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
         <span class="material-symbols-outlined fill-current">
-          {{ account.icon }}
+          {{ account.imageUrl }}
         </span>
         <p class="mr-2">
-          {{ account.name }}
+          {{ account.title }}
         </p>
       </button>
       } }@empty {
@@ -513,7 +516,7 @@
 
   <app-dialog
     title="Create Category"
-    btnName="Add"
+    btnTitle="Add"
     zIndex="z-30"
     [isIconOpen]="isIconOpen"
     [isDialogOpen]="isCreateCategory"
@@ -537,7 +540,7 @@
         </button>
         <input
           type="text"
-          [(ngModel)]="category.name"
+          [(ngModel)]="category.title"
           name="name"
           placeholder="Enter name"
           class="bg-transparent w-full border-0 text-2xl border-zinc-800 dark:text-zinc-300 text-gray-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
@@ -573,7 +576,7 @@
         </button>
         <input
           type="text"
-          [(ngModel)]="account.name"
+          [(ngModel)]="account.title"
           name="name"
           placeholder="Enter name"
           class="bg-transparent w-full border-0 text-2xl border-zinc-800 dark:text-zinc-300 text-gray-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
