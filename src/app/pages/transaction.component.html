@@ -20,6 +20,8 @@
           </svg>
         </div>
       </a>
+      <p>{{ transaction.type }}</p>
+
       <!-- Trash Icon -->
       <div class="p-2 mr-1 bg-slate-200 dark:bg-zinc-800 rounded-full">
         <svg
@@ -37,69 +39,114 @@
     </div>
     <!-- Transaction Form content -->
     <main class="h-full p-4 mx-auto w-full">
-      <form (ngSubmit)="onSubmit()" #form="ngForm" class="ml-2">
-        <!-- Title -->
-        <div class="mt-2">
+      <!-- Title -->
+      <div class="mt-2">
+        <input
+          type="text"
+          name="title"
+          [(ngModel)]="transaction.title"
+          placeholder="Untitled"
+          class="bg-transparent w-full border-0 text-3xl border-zinc-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
+        />
+      </div>
+      <!-- Category -->
+      <div class="mt-4">
+        <button
+          (click)="showCategory = !showCategory"
+          type="button"
+          class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-500 font-medium rounded-lg text-sm px-4 p-1.5"
+        >
+          @if (selectedCategory==null) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            viewBox="0 -960 960 960"
+            width="24"
+            class="fill-current h-5 w-5"
+          >
+            <path
+              d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"
+            />
+          </svg>
+          Add Category }@else{
+          <span class="material-symbols-outlined">{{
+            selectedCategory.imageUrl
+          }}</span>
+          {{ selectedCategory.title }}
+          <span class="material-symbols-outlined"> chevron_right </span>
+          }
+        </button>
+      </div>
+
+      <!-- Date -->
+      <div
+        class="mt-4 h-10 rounded-md w-full dark:bg-zinc-800 flex justify-between"
+      >
+        <div class="flex justify-start items-center ml-2">
+          <span class="material-symbols-outlined"> calendar_today </span>
+          <p
+            class="text-gray-600 dark:text-zinc-400 font-semibold text-sm ml-2"
+          >
+            Created On
+          </p>
+        </div>
+        <!-- date Input -->
+        <div class="flex justify-end items-center">
+          <span class="dark:text-zinc-300 text-zinc-700 text-sm mr-2">
+            {{ transaction.date | date }}
+          </span>
           <input
-            type="text"
-            placeholder="Untitled"
-            class="bg-transparent w-full border-0 text-3xl border-zinc-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
+            type="date"
+            [(ngModel)]="transaction.date"
+            name="date"
+            class="bg-transparent mr-2 focus:outline-none fill-current w-5"
           />
         </div>
-        <!-- Category -->
-        <div class="mt-4">
-          <button
-            (click)="showCategory = !showCategory"
-            type="button"
-            class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-500 font-medium rounded-lg text-sm px-4 p-1.5"
+      </div>
+      <!-- Type -->
+      <div
+        class="mt-4 h-10 rounded-md w-full dark:bg-zinc-800 flex justify-between"
+      >
+        <div class="flex justify-start items-center ml-2">
+          <span class="material-symbols-outlined"> asterisk </span>
+          <p
+            class="text-gray-600 dark:text-zinc-400 font-semibold text-sm ml-2"
           >
-            @if (selectedCategory==null) {
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="24"
-              viewBox="0 -960 960 960"
-              width="24"
-              class="fill-current h-5 w-5"
+            Type
+          </p>
+        </div>
+        <!-- date Input -->
+        <div class="flex justify-end items-center">
+          <div class="w-28">
+            <button
+              (click)="showType = !showType"
+              type="button"
+              class="text-slate-800 w-28 dark:text-zinc-200 flex justify-center items-center gap-1 font-medium rounded-lg text-sm px-4 p-1.5"
             >
-              <path
-                d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"
-              />
-            </svg>
-            Add Category }@else{
-            <span class="material-symbols-outlined">{{
-              selectedCategory.imageUrl
-            }}</span>
-            {{ selectedCategory.title }}
-            <span class="material-symbols-outlined"> chevron_right </span>
-            }
-          </button>
-        </div>
+              {{ transaction.type }}
+              @if (showType) {
 
-        <!-- Date -->
-        <div
-          class="mt-4 h-10 rounded-md w-full dark:bg-zinc-800 flex justify-between"
-        >
-          <div class="flex justify-start items-center ml-2">
-            <span class="material-symbols-outlined"> calendar_today </span>
-            <p class="text-gray-600 dark:text-zinc-400 font-bold text-sm ml-2">
-              Created On
-            </p>
-          </div>
-          <!-- date Input -->
-          <div class="flex justify-end items-center">
-            <span class="dark:text-zinc-300 text-zinc-700 text-sm mr-2">
-              {{ date | date }}
-            </span>
-            <input
-              type="date"
-              name="date"
-              class="bg-transparent mr-2 focus:outline-none fill-current w-5"
-              [(ngModel)]="date"
-            />
+              <span class="material-symbols-outlined"> expand_less </span>
+              }@else{
+              <span class="material-symbols-outlined"> expand_more </span>
+              }
+            </button>
+            <div
+              *ngIf="showType"
+              class="animate-fade animate-once h-20 w-28 bg-slate-50 dark:bg-zinc-800 border dark:border-zinc-600 absolute mt-1 rounded-md shadow-2xl grid place-content-center gap-4 z-50"
+            >
+              <button class="w-full" (click)="selectType('Income')">
+                Income
+              </button>
+              <Button class="w-full" (click)="selectType('Expense')"
+                >Expense</Button
+              >
+            </div>
           </div>
         </div>
-        <!-- Amount -->
-        <!-- <div
+      </div>
+      <!-- Amount -->
+      <!-- <div
           class="mt-4 h-10 rounded-md w-full dark:bg-zinc-800 flex justify-between items-center"
         >
           <div class="flex justify-start items-center ml-2">
@@ -118,11 +165,9 @@
             />
           </div>
         </div> -->
-      </form>
     </main>
   </section>
 
-  <!-- //TODO Create component of it -->
   <!-- Add Category Form -->
   <section
     *ngIf="showCategory"
@@ -164,7 +209,7 @@
 
       }@else{
       <button
-        (click)="showCategory = !showCategory"
+        (click)="chooseCategory(category)"
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
@@ -260,6 +305,9 @@
       }@else{
       <button
         (click)="chooseAccount(account)"
+        [ngClass]="
+          account.isDefault ? 'dark:bg-zinc-800 bg-slate-200 border-none' : ''
+        "
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
@@ -291,7 +339,7 @@
         (click)="onMoneyDialogue()"
         class="dark:text-zinc-300 text-gray-900 text-3xl font-semibold"
       >
-        {{ transactionAmount | number : "1.2-2" }}
+        {{ transaction.amount | number : "1.2-2" }}
         <span class="font-normal">INR</span>
       </button>
     </div>
@@ -316,6 +364,7 @@
         </div> -->
         <div class="p-2 mt-2">
           <button
+            (click)="onSave()"
             type="button"
             class="text-white bg-zinc-700 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-zinc-700"
           >
@@ -326,7 +375,7 @@
     </div>
   </section>
 
-  <!-- Add money popup -->
+  <!-- Add Amount popup -->
 
   <section
     *ngIf="showMoneyDialogue"
@@ -335,14 +384,16 @@
     <div class="p-3 flex justify-between items-center">
       <h1 class="text-xl dark:text-slate-200 mt-1">Account</h1>
     </div>
+
     <!-- Account chips -->
+
     <div
       class="h-fit w-full p-3 flex justify-start items-start gap-3 overflow-scroll no-scrollbar"
     >
       @for (account of accountList; track account.id) { @if (account &&
       selectedAccount) {
       <button
-        (click)="showCategory = !showCategory"
+        (click)="chooseAccount(account)"
         type="button"
         [ngClass]="
           account!.id === selectedAccount!.id
@@ -357,16 +408,19 @@
         <p class="mr-2">
           {{ account.title }}
         </p>
-        @if (account.id ===selectedAccount.id) {
+        <!-- @if (account.id ===selectedAccount.id) {
         <span class="material-symbols-outlined rounded-md dark:text-white">
           close
         </span>
-        }
+        } -->
       </button>
 
       }@else{
       <button
-        (click)="showCategory = !showCategory"
+        (click)="chooseAccount(account)"
+        [ngClass]="
+          account.isDefault ? 'dark:bg-zinc-800 bg-slate-200 border-none' : ''
+        "
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5"
       >
@@ -383,7 +437,7 @@
 
       <!-- Add new -->
       <button
-        (click)="showCategory = !showCategory"
+        (click)="isCreateAcccount = !isCreateAcccount"
         type="button"
         class="text-slate-800 dark:text-zinc-200 flex justify-center items-center gap-1 border border-gray-300 dark:border-zinc-400 font-medium rounded-lg text-sm px-4 p-1.5 min-w-[8rem]"
       >
@@ -391,7 +445,6 @@
         Add new
       </button>
     </div>
-
     <!-- Amount Input -->
     <div class="flex justify-center items-center h-20 w-full">
       <h1 class="dark:text-zinc-300 text-gray-900 text-3xl font-bold">

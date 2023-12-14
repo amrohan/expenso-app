@@ -63,10 +63,4 @@ export class HomeComponent {
       accountId: 'Paytm',
     },
   ];
-
-  onAdd() {
-    console.log(
-      '🚀 ~ file: home.component.ts:71 ~ HomeComponent ~ ButtonClick ~ click:'
-    );
-  }
 }

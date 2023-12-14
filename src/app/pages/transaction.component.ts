@@ -1,11 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from '../components/layout.component';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DialogComponent } from '../components/dialog.component';
 import { Category } from '../models/category.model';
 import { Account } from '../models/account.model';
+import { Transaction } from '../models/transactions.model';
 
 @Component({
   selector: 'app-transaction',
@@ -19,14 +20,16 @@ import { Account } from '../models/account.model';
   ],
   templateUrl: './transaction.component.html',
 })
-export class TransactionComponent {
+export class TransactionComponent implements OnInit {
   showCategory: boolean = false;
   date: Date = new Date();
-  showMoneyDialogue: boolean = false;
   isCreateCategory: boolean = false;
   isCreateAcccount: boolean = false;
   isIconOpen: boolean = false;
   selectedIcon: string = 'category';
+  showMoneyDialogue: boolean = false;
+
+  showType: boolean = false;
 
   category: Category = {
     id: '',
@@ -42,21 +45,34 @@ export class TransactionComponent {
     userId: '',
   };
 
-  selectedCategory: Category = {
-    id: '2',
-    title: ' Transportation',
-    imageUrl: 'train',
-    userId: '1',
+  transaction: Transaction = {
+    id: 'id11',
+    title: '',
+    amount: 0,
+    date: this.date || new Date(),
+    type: '',
+    imageUrl: '',
+    categoryId: '',
+    accountId: '',
+    userId: '',
   };
 
-  selectedAccount: Category = {
-    id: '1',
-    title: 'Kotak',
-    imageUrl: 'account_balance',
-    userId: '1',
-  };
+  selectedCategory: Category | null = null;
 
-  transactionAmount: number = 69.0;
+  selectedAccount: Category | null = null;
+
+  isAdd = signal(false);
+
+  // Injection
+  private readonly route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    const data = this.route.snapshot.paramMap.get('id');
+    if (!data) {
+      this.showMoneyDialogue = true;
+      this.isAdd.set(true);
+    }
+  }
 
   // Calculater number
   countNumber = signal('');
@@ -78,14 +94,18 @@ export class TransactionComponent {
 
   onMoneyDialogue() {
     this.showMoneyDialogue = !this.showMoneyDialogue;
-    this.transactionAmount === 0
+    this.transaction.amount === 0
       ? this.countNumber.set('')
-      : this.countNumber.set(String(this.transactionAmount));
+      : this.countNumber.set(String(this.transaction.amount));
   }
 
   onMoneyEnter() {
-    this.transactionAmount = Number(this.countNumber());
+    this.transaction.amount = Number(this.countNumber());
     this.showMoneyDialogue = !this.showMoneyDialogue;
+
+    this.isAdd()
+      ? (this.showCategory = !this.showCategory)
+      : (this.showCategory = this.showCategory);
   }
 
   onSubmit() {}
@@ -135,7 +155,6 @@ export class TransactionComponent {
     this.isIconOpen = !this.isIconOpen;
   }
 
-  // categoryList: category[] = []
   categoryList: Category[] = [
     {
       id: '1',
@@ -193,6 +212,7 @@ export class TransactionComponent {
       title: 'Kotak',
       imageUrl: 'account_balance',
       userId: '1',
+      isDefault: true,
     },
     {
       id: '2',
@@ -211,6 +231,7 @@ export class TransactionComponent {
   //
   chooseCategory(category: Category) {
     this.selectedCategory = category;
+    this.transaction.categoryId = category.id;
     this.showCategory = !this.showCategory;
   }
   removeCategory(category: Category) {
@@ -223,5 +244,15 @@ export class TransactionComponent {
   }
   chooseAccount(account: Account) {
     this.selectedAccount = account;
+    this.transaction.accountId = account.id;
   }
+
+  // Expense Type
+
+  selectType(type: string) {
+    this.transaction.type = type;
+    this.showType = !this.showType;
+  }
+
+  onSave() {}
 }

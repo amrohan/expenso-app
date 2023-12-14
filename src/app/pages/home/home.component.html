@@ -106,12 +106,28 @@
     <div
       class="fixed bottom-8 right-4 w-16 h-16 grid place-content-center z-40"
     >
-      <button
-        (click)="onAdd()"
-        class="text-white bg-zinc-700 rounded-full grid place-content-center h-14 w-14 text-xs"
+      <!-- <div
+        class="w-28 h-28 bg-zinc-800 absolute -inset-x-8 -inset-y-28 rounded-md grid place-content-center"
       >
-        <span class="material-symbols-outlined"> add </span>
-      </button>
+        <button
+          class="dark:text-zinc-300 flex p-2 gap-1 justify-start items-center h-12 w-full"
+        >
+          <span class="material-symbols-outlined"> download </span>
+          Income
+        </button>
+        <button
+          class="dark:text-zinc-300 flex p-2 gap-1 justify-center items-center h-12 w-full"
+        >
+          <span class="material-symbols-outlined"> upload </span>
+          Expense
+        </button>
+      </div> -->
+      <a
+        routerLink="/add"
+        class="dark:text-white dark:bg-zinc-800 bg-slate-200 border border-zinc-700 shadow-2xl rounded-full grid place-content-center h-14 w-14 text-xs"
+      >
+        <span class="material-symbols-outlined fill-current"> add </span>
+      </a>
     </div>
   </section>
 </app-layout>

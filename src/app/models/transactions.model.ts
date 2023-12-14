@@ -1,5 +1,5 @@
 export type Transaction = {
-  _id: string;
+  id: string;
   title: string;
   amount: number;
   date: Date;
@@ -8,9 +8,9 @@ export type Transaction = {
   categoryId: string;
   accountId: string;
   userId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   deletedAt?: Date | null;
-  isDeleted: boolean;
-  isActive: boolean;
+  isDeleted?: boolean;
+  isActive?: boolean;
 };

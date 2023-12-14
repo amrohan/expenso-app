@@ -3,6 +3,7 @@ export type Account = {
   title: string;
   imageUrl: string;
   userId: string;
+  isDefault?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
