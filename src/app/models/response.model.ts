@@ -1,5 +1,5 @@
-export type Response<T> = {
+export class Response<T> {
   status: number;
   message: string;
-  Data: T;
-};
+  data: T;
+}

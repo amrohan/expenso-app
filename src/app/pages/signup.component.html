@@ -4,7 +4,7 @@
       <p class="text-white text-center text-xl mb-10">Register now</p>
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
         <!-- Username -->
         <div class="flex flex-col gap-1 w-72">
           <label for="" class="text-slate-200">Username</label>
@@ -15,7 +15,7 @@
             class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
           />
           <span
-            class="text-xs text-zinc-300"
+            class="text-xs"
             *ngIf="
               loginForm.get('username')?.hasError('minlength') &&
               loginForm.get('username')?.touched
@@ -23,7 +23,7 @@
             [ngClass]="
               loginForm.get('username')?.hasError('minlength')
                 ? 'text-red-400'
-                : ''
+                : 'text-zinc-300'
             "
           >
             Username must be at least 4 characters long.
@@ -39,13 +39,15 @@
             class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
           />
           <span
-            class="text-xs text-zinc-300"
+            class="text-xs"
             *ngIf="
               loginForm.get('email')?.hasError('email') &&
               loginForm.get('email')?.touched
             "
             [ngClass]="
-              loginForm.get('email')?.hasError('email') ? 'text-red-400' : ''
+              loginForm.get('username')?.hasError('minlength')
+                ? 'text-red-400'
+                : 'text-zinc-300'
             "
           >
             Invalid email format.
@@ -61,15 +63,15 @@
             class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
           />
           <span
-            class="text-xs text-zinc-300"
+            class="text-xs"
             *ngIf="
               loginForm.get('password')?.hasError('minlength') &&
               loginForm.get('password')?.touched
             "
             [ngClass]="
-              loginForm.get('password')?.hasError('minlength')
+              loginForm.get('username')?.hasError('minlength')
                 ? 'text-red-400'
-                : ''
+                : 'text-zinc-300'
             "
           >
             Password must be at least 6 characters long.

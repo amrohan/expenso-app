@@ -6,7 +6,7 @@ import { LoginComponent } from './pages/login.component';
 import { SignupComponent } from './pages/signup.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, canActivate: [authGuard] },
   { path: 'transaction/:id', component: TransactionComponent },
   { path: 'add', component: TransactionComponent },
   { path: 'login', component: LoginComponent },

@@ -3,10 +3,10 @@ export type User = {
   username: string;
   name: string;
   email: string;
-  password: string;
-  imageUrl: string;
+  password?: string;
+  imageUrl?: string;
   createdAt?: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
   deletedAt?: Date | null;
   isDeleted?: boolean;
   isActive?: boolean;
