@@ -2,6 +2,13 @@
   <main class="h-full w-full flex flex-col justify-center items-center gap-4">
     <div class="w-72">
       <p class="text-white text-center text-xl mb-10">Register now</p>
+      <div
+        *ngIf="isErrorMessage"
+        class="bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
+        role="alert"
+      >
+        <span class="font-bold">Bruh {{ validationInfo() }}</span>
+      </div>
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-col gap-2">
@@ -28,6 +35,12 @@
           >
             Username must be at least 4 characters long.
           </span>
+          <span
+            class="text-xs text-red-400"
+            *ngIf="loginForm.get('username')?.errors?.['pattern']"
+          >
+            Username can only contain aplhabets or number
+          </span>
         </div>
         <!-- Email -->
         <div class="flex flex-col gap-1 w-72">
@@ -39,15 +52,10 @@
             class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
           />
           <span
-            class="text-xs"
+            class="text-xs text-red-400"
             *ngIf="
               loginForm.get('email')?.hasError('email') &&
               loginForm.get('email')?.touched
-            "
-            [ngClass]="
-              loginForm.get('username')?.hasError('minlength')
-                ? 'text-red-400'
-                : 'text-zinc-300'
             "
           >
             Invalid email format.
@@ -63,15 +71,10 @@
             class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
           />
           <span
-            class="text-xs"
+            class="text-xs text-red-400"
             *ngIf="
               loginForm.get('password')?.hasError('minlength') &&
               loginForm.get('password')?.touched
-            "
-            [ngClass]="
-              loginForm.get('username')?.hasError('minlength')
-                ? 'text-red-400'
-                : 'text-zinc-300'
             "
           >
             Password must be at least 6 characters long.
@@ -94,8 +97,18 @@
       <div class="w-72 mt-4">
         <button
           [disabled]="!loginForm.valid"
-          class="p-1.5 bg-blue-400 border-zinc-700 w-full rounded-md text-black disabled:cursor-not-allowed"
+          class="p-1.5 bg-blue-400 border-zinc-700 w-full rounded-md text-black disabled:cursor-not-allowed flex justify-center items-center gap-2"
         >
+          <div
+            *ngIf="isLoading"
+            class="inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] text-secondary motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status"
+          >
+            <span
+              class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+              >Loading...</span
+            >
+          </div>
           sign up
         </button>
       </div>

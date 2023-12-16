@@ -8,6 +8,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (auth.IsAuthenticated()) {
     return true;
   }
-
+  alert('Your session has expired please login');
+  router.navigate(['/login']);
   return false;
 };

@@ -47,6 +47,11 @@ export class AuthService {
     );
   }
 
+  LogoutUser() {
+    this.http.post<Response<AuthCredentials>>(`${this.baseUrl}/logout`, {}, {});
+    localStorage.removeItem('access_token');
+  }
+
   IsAuthenticated() {
     let value = false;
     const token = localStorage.getItem('access_token');

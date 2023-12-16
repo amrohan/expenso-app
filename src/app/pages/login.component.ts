@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthCredentials } from '../models/auth.model';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/user.model';
 
@@ -16,6 +16,8 @@ import { User } from '../models/user.model';
 export class LoginComponent implements OnInit {
   showPassword: boolean = false;
   inputValue: string = '';
+  isLoading = false;
+
   userCredentials: AuthCredentials = {
     username: '',
     email: '',
@@ -25,12 +27,15 @@ export class LoginComponent implements OnInit {
   userInfo: User;
 
   isErrorMessage: boolean = false;
-  validationInfo = 'abc';
+  validationInfo = '';
 
   private auth = inject(AuthService);
+  private route = inject(Router);
 
   ngOnInit(): void {
-    this.auth.IsAuthenticated();
+    if (this.auth.IsAuthenticated()) {
+      this.route.navigate(['/']);
+    }
   }
 
   togglePassword() {
@@ -43,14 +48,21 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = !this.isLoading;
     this.auth.LoginUser(this.userCredentials).subscribe({
-      next: (res) => {},
+      next: (res) => {
+        this.isLoading = !this.isLoading;
+        if (res.status === 200) {
+          this.route.navigate(['/']);
+        }
+      },
       error: (error) => {
         if (error.status === 404) {
           this.showErrorMessage('User not found');
         } else {
           this.showErrorMessage(error.error.message);
         }
+        this.isLoading = !this.isLoading;
       },
     });
   }
