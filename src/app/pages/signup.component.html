@@ -1,0 +1,111 @@
+<section class="h-screen w-screen bg-zinc-900">
+  <main class="h-full w-full flex flex-col justify-center items-center gap-4">
+    <div class="w-72">
+      <p class="text-white text-center text-xl mb-10">Register now</p>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="flex flex-col gap-4">
+        <!-- Username -->
+        <div class="flex flex-col gap-1 w-72">
+          <label for="" class="text-slate-200">Username</label>
+          <input
+            formControlName="username"
+            name="username"
+            type="text"
+            class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
+          />
+          <span
+            class="text-xs text-zinc-300"
+            *ngIf="
+              loginForm.get('username')?.hasError('minlength') &&
+              loginForm.get('username')?.touched
+            "
+            [ngClass]="
+              loginForm.get('username')?.hasError('minlength')
+                ? 'text-red-400'
+                : ''
+            "
+          >
+            Username must be at least 4 characters long.
+          </span>
+        </div>
+        <!-- Email -->
+        <div class="flex flex-col gap-1 w-72">
+          <label for="" class="text-slate-200">Email</label>
+          <input
+            formControlName="email"
+            name="email"
+            type="text"
+            class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
+          />
+          <span
+            class="text-xs text-zinc-300"
+            *ngIf="
+              loginForm.get('email')?.hasError('email') &&
+              loginForm.get('email')?.touched
+            "
+            [ngClass]="
+              loginForm.get('email')?.hasError('email') ? 'text-red-400' : ''
+            "
+          >
+            Invalid email format.
+          </span>
+        </div>
+        <!-- Password -->
+        <div class="flex flex-col gap-1 w-72">
+          <label for="" class="text-slate-200">Password</label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            name="password"
+            class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
+          />
+          <span
+            class="text-xs text-zinc-300"
+            *ngIf="
+              loginForm.get('password')?.hasError('minlength') &&
+              loginForm.get('password')?.touched
+            "
+            [ngClass]="
+              loginForm.get('password')?.hasError('minlength')
+                ? 'text-red-400'
+                : ''
+            "
+          >
+            Password must be at least 6 characters long.
+          </span>
+        </div>
+        <div
+          class="text-sm text-zinc-300 flex items-center justify-start gap-2 w-full"
+        >
+          <input
+            type="checkbox"
+            name="show"
+            id=""
+            class="h-4 w-4 bg-zinc-300"
+            (change)="togglePassword()"
+          />
+          <span>Show password </span>
+        </div>
+      </div>
+
+      <div class="w-72 mt-4">
+        <button
+          [disabled]="!loginForm.valid"
+          class="p-1.5 bg-blue-400 border-zinc-700 w-full rounded-md text-black disabled:cursor-not-allowed"
+        >
+          sign up
+        </button>
+      </div>
+    </form>
+
+    <div class="text-xs flex items-center justify-center gap-1 text-zinc-300">
+      <p>Already have an account?</p>
+      <a
+        routerLink="/login"
+        class="text-blue-300 hover:border-b border-blue-300 cursor-pointer"
+        >Login
+      </a>
+    </div>
+  </main>
+</section>

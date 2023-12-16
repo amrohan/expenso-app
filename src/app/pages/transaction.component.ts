@@ -68,9 +68,22 @@ export class TransactionComponent implements OnInit {
 
   ngOnInit(): void {
     const data = this.route.snapshot.paramMap.get('id');
+    const transactionType = this.route.snapshot.queryParams['type'];
     if (!data) {
       this.showMoneyDialogue = true;
       this.isAdd.set(true);
+    }
+
+    // checking type type
+    switch (transactionType) {
+      case 'income':
+        this.transaction.type = 'Income';
+        break;
+      case 'expense':
+        this.transaction.type = 'Expense';
+        break;
+      default:
+        break;
     }
   }
 

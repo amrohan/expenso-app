@@ -30,7 +30,9 @@
     class="dark:bg-[#121212] bg-[#f8f8ff] text-slate-800 border border-black shadow-md rounded-t-3xl md:rounded-3xl mt-2"
   >
     <!-- Header and Menu -->
-    <div class="p-3 flex justify-between items-center">
+    <div
+      class="p-3 flex justify-between items-center sticky top-10 dark:bg-[#121212] bg-[#f8f8ff] rounded-t-3xl"
+    >
       <h1 class="text-xl font-semibold dark:text-slate-200 mt-1">
         Transactions
       </h1>
@@ -56,10 +58,10 @@
         </button>
       </div>
     </div>
-    <main class="max-h-[28rem] min-h-[28rem] p-3 overflow-scroll">
+    <main class="h-full p-3 overflow-scroll mb-20">
       @for (item of data; track $index) {
       <div
-        [routerLink]="['/transaction', item._id]"
+        [routerLink]="['/transaction', item.id]"
         routerLinkActive="active"
         class="cursor-pointer w-full mt-2 flex items-center max-h-16 bg-slate-50 dark:bg-zinc-900 dark:text-slate-100 rounded-md shadow-sm border border-gray-500 dark:border-zinc-800"
       >
@@ -70,7 +72,7 @@
         </div>
         <!-- Amounts -->
         <div class="w-4/12 flex flex-col justify-center items-end p-3">
-          @if (item.type==='income') {
+          @if (item.type==='Income') {
           <p class="text-sm text-green-700">+${{ item.amount }}</p>
           }@else {
           <p class="text-sm text-red-700">-${{ item.amount }}</p>
@@ -106,28 +108,31 @@
     <div
       class="fixed bottom-8 right-4 w-16 h-16 grid place-content-center z-40"
     >
-      <!-- <div
-        class="w-28 h-28 bg-zinc-800 absolute -inset-x-8 -inset-y-28 rounded-md grid place-content-center"
+      <div
+        *ngIf="isMenu"
+        class="w-[8rem] h-24 shadow-md dark:bg-zinc-800 bg-[#f8f8ff] text-black border border-zinc-800 dark:border-zinc-600 absolute -inset-x-16 -inset-y-24 rounded-md"
       >
         <button
-          class="dark:text-zinc-300 flex p-2 gap-1 justify-start items-center h-12 w-full"
+          (click)="navigateUser(2)"
+          class="dark:text-zinc-300 text-zinc-900 hover:bg-[#e6e6fa] dark:hover:bg-zinc-700 hover:rounded-md p-1 h-8 w-full mt-2"
         >
-          <span class="material-symbols-outlined"> download </span>
+          <!-- <span class="material-symbols-outlined"> download </span> -->
           Income
         </button>
         <button
-          class="dark:text-zinc-300 flex p-2 gap-1 justify-center items-center h-12 w-full"
+          (click)="navigateUser(1)"
+          class="dark:text-zinc-300 text-zinc-900 hover:bg-[#e6e6fa] dark:hover:bg-zinc-700 hover:rounded-md p-1 h-8 w-full mt-2"
         >
-          <span class="material-symbols-outlined"> upload </span>
+          <!-- <span class="material-symbols-outlined"> upload </span> -->
           Expense
         </button>
-      </div> -->
-      <a
-        routerLink="/add"
-        class="dark:text-white dark:bg-zinc-800 bg-slate-200 border border-zinc-700 shadow-2xl rounded-full grid place-content-center h-14 w-14 text-xs"
+      </div>
+      <button
+        (click)="isMenu = !isMenu"
+        class="dark:text-white dark:bg-zinc-800 bg-[#f8f8ff] border border-zinc-700 shadow-md rounded-full grid place-content-center h-14 w-14 text-xs"
       >
         <span class="material-symbols-outlined fill-current"> add </span>
-      </a>
+      </button>
     </div>
   </section>
 </app-layout>

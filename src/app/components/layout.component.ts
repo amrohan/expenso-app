@@ -7,15 +7,15 @@ import { NavbarComponent } from './navbar.component';
   standalone: true,
   imports: [CommonModule, NavbarComponent],
   template: `
-  <section class="dark:bg-black dark:text-slate-50 bg-white h-screen w-full overflow-x-hidden relative">
-    <div class="max-w-5xl mx-auto relative">
-      <app-navbar></app-navbar>
-      <ng-content></ng-content>
-    </div>
-  </section>
+    <section
+      class="dark:bg-black dark:text-slate-50 bg-white h-screen w-full overflow-x-hidden relative"
+    >
+      <div class="max-w-5xl mx-auto relative h-screen ">
+        <app-navbar></app-navbar>
+        <ng-content></ng-content>
+      </div>
+    </section>
   `,
-  styles: ``
+  styles: ``,
 })
-export class LayoutComponent {
-
-}
+export class LayoutComponent {}

@@ -1,0 +1,59 @@
+<section class="h-screen w-screen bg-zinc-900">
+  <main class="h-full w-full flex flex-col justify-center items-center gap-4">
+    <div class="w-72">
+      <p class="text-white text-center text-xl mb-10">Welcome Back</p>
+    </div>
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-1 w-72">
+          <label for="" class="text-slate-200">Username or email</label>
+          <input
+            [(ngModel)]="inputValue"
+            name="inputValue"
+            (ngModelChange)="updateLoginCredentials()"
+            type="text"
+            class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
+          />
+        </div>
+        <div class="flex flex-col gap-1 w-72">
+          <label for="" class="text-slate-200">Password</label>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="loginCredentials.password"
+            name="password"
+            class="bg-zinc-800 p-2 text-white rounded-md border border-zinc-700 w-full"
+          />
+        </div>
+        <div
+          class="text-sm text-zinc-300 flex items-center justify-start gap-2 w-full"
+        >
+          <input
+            type="checkbox"
+            name="show"
+            id=""
+            class="h-4 w-4 bg-zinc-300"
+            (change)="togglePassword()"
+          />
+          <span>Show password </span>
+        </div>
+      </div>
+
+      <div class="w-72 mt-1">
+        <button
+          class="p-1.5 bg-blue-400 border-zinc-700 w-full rounded-md text-black"
+        >
+          login
+        </button>
+      </div>
+    </form>
+
+    <div class="text-xs flex items-center justify-center gap-1 text-zinc-300">
+      <p>Don't have an account?</p>
+      <a
+        routerLink="/signup"
+        class="text-blue-300 hover:border-b border-blue-300 cursor-pointer"
+        >Sign up</a
+      >
+    </div>
+  </main>
+</section>

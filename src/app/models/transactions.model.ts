@@ -4,7 +4,7 @@ export type Transaction = {
   amount: number;
   date: Date;
   type: string;
-  imageUrl: string;
+  imageUrl?: string;
   categoryId: string;
   accountId: string;
   userId: string;
