@@ -1,11 +1,11 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { User } from '../models/user.model';
-import { environment } from '../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { Response } from '../models/response.model';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { AuthCredentials } from '../models/auth.model';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
