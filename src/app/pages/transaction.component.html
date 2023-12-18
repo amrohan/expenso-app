@@ -71,7 +71,8 @@
           </svg>
           Add Category }@else{
           <span class="material-symbols-outlined">{{
-            selectedCategory?.imageUrl
+            selectedCategory?.imageUrl || transaction.categoryId
+              | idtoicon : categoryList
           }}</span>
           {{ transaction.categoryId | category : categoryList }}
           <span class="material-symbols-outlined"> chevron_right </span>

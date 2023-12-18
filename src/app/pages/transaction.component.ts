@@ -14,6 +14,7 @@ import { AccountService } from '../services/account.service';
 import date from 'date-and-time';
 import { CategoryPipe } from '../category.pipe';
 import { AccountPipe } from '../account.pipe';
+import { IdtoiconPipe } from '../idtoicon.pipe';
 
 @Component({
   selector: 'app-transaction',
@@ -26,6 +27,7 @@ import { AccountPipe } from '../account.pipe';
     FormsModule,
     CategoryPipe,
     AccountPipe,
+    IdtoiconPipe,
   ],
   templateUrl: './transaction.component.html',
 })
