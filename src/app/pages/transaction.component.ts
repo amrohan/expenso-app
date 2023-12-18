@@ -7,6 +7,13 @@ import { DialogComponent } from '../components/dialog.component';
 import { Category } from '../models/category.model';
 import { Account } from '../models/account.model';
 import { Transaction } from '../models/transactions.model';
+import { TransactionService } from '../services/transaction.service';
+import { AuthService } from '../services/auth.service';
+import { CategoryService } from '../services/category.service';
+import { AccountService } from '../services/account.service';
+import date from 'date-and-time';
+import { CategoryPipe } from '../category.pipe';
+import { AccountPipe } from '../account.pipe';
 
 @Component({
   selector: 'app-transaction',
@@ -17,6 +24,8 @@ import { Transaction } from '../models/transactions.model';
     DialogComponent,
     RouterLink,
     FormsModule,
+    CategoryPipe,
+    AccountPipe,
   ],
   templateUrl: './transaction.component.html',
 })
@@ -30,6 +39,10 @@ export class TransactionComponent implements OnInit {
   showMoneyDialogue: boolean = false;
 
   showType: boolean = false;
+
+  categoryList: Category[] = [];
+
+  accountList: Account[] = [];
 
   category: Category = {
     id: '',
@@ -46,7 +59,7 @@ export class TransactionComponent implements OnInit {
   };
 
   transaction: Transaction = {
-    id: 'id11',
+    id: '',
     title: '',
     amount: 0,
     date: this.date || new Date(),
@@ -65,6 +78,10 @@ export class TransactionComponent implements OnInit {
 
   // Injection
   private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly transactionService = inject(TransactionService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly accountService = inject(AccountService);
 
   ngOnInit(): void {
     const data = this.route.snapshot.paramMap.get('id');
@@ -72,6 +89,8 @@ export class TransactionComponent implements OnInit {
     if (!data) {
       this.showMoneyDialogue = true;
       this.isAdd.set(true);
+    } else {
+      this.getTransactionById(data);
     }
 
     // checking type type
@@ -85,6 +104,9 @@ export class TransactionComponent implements OnInit {
       default:
         break;
     }
+    this.transaction.userId = this.authService.GetUserId()!;
+
+    this.getAllCategoryAndAccount(this.transaction.userId);
   }
 
   // Calculater number
@@ -168,79 +190,6 @@ export class TransactionComponent implements OnInit {
     this.isIconOpen = !this.isIconOpen;
   }
 
-  categoryList: Category[] = [
-    {
-      id: '1',
-      title: ' Food & Drinks',
-      imageUrl: 'restaurant_menu',
-      userId: '1',
-    },
-    {
-      id: '2',
-      title: ' Transportation',
-      imageUrl: 'train',
-      userId: '1',
-    },
-    {
-      id: '3',
-      title: ' Entertainment',
-      imageUrl: 'movie',
-      userId: '1',
-    },
-    {
-      id: '4',
-      title: 'Bills & Fees',
-      imageUrl: 'receipt',
-      userId: '1',
-    },
-    {
-      id: '5',
-      title: 'Shopping',
-      imageUrl: 'shopping_cart',
-      userId: '1',
-    },
-    {
-      id: '6',
-      title: 'Gifts',
-      imageUrl: 'featured_seasonal_and_gifts',
-      userId: '1',
-    },
-    {
-      id: '7',
-      title: 'Health',
-      imageUrl: 'local_hospital',
-      userId: '1',
-    },
-    {
-      id: '8',
-      title: 'Others',
-      imageUrl: 'unknown_document',
-      userId: '1',
-    },
-  ];
-
-  accountList: Account[] = [
-    {
-      id: '1',
-      title: 'Kotak',
-      imageUrl: 'account_balance',
-      userId: '1',
-      isDefault: true,
-    },
-    {
-      id: '2',
-      title: 'Paytm',
-      imageUrl: 'account_balance',
-      userId: '1',
-    },
-    {
-      id: '3',
-      title: 'Cash',
-      imageUrl: 'account_balance_wallet',
-      userId: '1',
-    },
-  ];
-
   //
   chooseCategory(category: Category) {
     this.selectedCategory = category;
@@ -267,5 +216,62 @@ export class TransactionComponent implements OnInit {
     this.showType = !this.showType;
   }
 
-  onSave() {}
+  onSave() {
+    const transactionType = this.route.snapshot.queryParams['type'];
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(String(this.transaction.date))) {
+      let ldate = date.parse(String(this.transaction.date), 'YYYY-MM-DD');
+      this.transaction.date = ldate;
+    } else {
+      console.log('The date string is not in the format YYYY-MM-DD.');
+    }
+
+    if (transactionType) {
+      this.transactionService.CreateTransaction(this.transaction).subscribe({
+        next: (res) => {},
+        error: (err) => {},
+      });
+    } else {
+      this.transactionService.UpdateTransaction(this.transaction).subscribe({
+        next: (res) => {},
+        error: (err) => {},
+      });
+    }
+  }
+
+  deleteTransaction(id: string) {
+    this.transactionService.DeleteTransaction(id).subscribe({
+      next: (res) => {},
+      error: (err) => {},
+    });
+  }
+
+  getAllCategoryAndAccount(userId: string) {
+    this.categoryService.GetCategoryByUserId(userId).subscribe({
+      next: (res) => {
+        this.categoryList = res.data;
+      },
+      error: (err) => {},
+    });
+
+    this.accountService.GetAccountByUserId(userId).subscribe({
+      next: (res) => {
+        this.accountList = res.data;
+        const defaultAccount = this.accountList.find(
+          (item) => item.isDefault === true
+        );
+        this.transaction.accountId = defaultAccount!.id;
+      },
+      error: (err) => {},
+    });
+  }
+
+  getTransactionById(id: string) {
+    this.transactionService.GetTransactionByID(id).subscribe({
+      next: (res) => {
+        this.transaction = res.data;
+      },
+      error: (err) => {},
+    });
+  }
 }

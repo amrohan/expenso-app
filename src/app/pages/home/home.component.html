@@ -58,8 +58,11 @@
         </button>
       </div>
     </div>
-    <main class="h-full p-3 overflow-scroll mb-20">
-      @for (item of data; track $index) {
+
+    @if (transaction$ |async ; as transaction) {
+
+    <main class="h-full p-3 min-h-screen mb-20">
+      @for (item of transaction.data; track $index) {
       <div
         [routerLink]="['/transaction', item.id]"
         routerLinkActive="active"
@@ -68,7 +71,9 @@
         <!-- Name -->
         <div class="flex flex-col justify-center items-start h-full p-3 w-8/12">
           <p class="text-base">{{ item.title }}</p>
-          <p class="text-[11px] dark:text-slate-300">{{ item.categoryId }}</p>
+          <p class="text-[11px] dark:text-slate-300">
+            {{ item.categoryId | category : categoryList }}
+          </p>
         </div>
         <!-- Amounts -->
         <div class="w-4/12 flex flex-col justify-center items-end p-3">
@@ -78,7 +83,7 @@
           <p class="text-sm text-red-700">-${{ item.amount }}</p>
           }
           <p class="text-[11px] dark:text-slate-300">
-            From {{ item.accountId }}
+            From {{ item.accountId | account : accountList }}
           </p>
         </div>
         <!-- Menu -->
@@ -103,6 +108,9 @@
       </div>
       }
     </main>
+    }@else{
+    <p>loading</p>
+    }
 
     <!-- Add button -->
     <div

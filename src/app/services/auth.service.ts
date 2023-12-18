@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { Observable, tap } from 'rxjs';
-import { Response } from '../models/response.model';
+import { ApiResponse } from '../models/response.model';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { AuthCredentials } from '../models/auth.model';
@@ -22,9 +22,9 @@ export class AuthService {
 
   private http = inject(HttpClient);
 
-  LoginUser(user: AuthCredentials): Observable<Response<AuthCredentials>> {
+  LoginUser(user: AuthCredentials): Observable<ApiResponse<AuthCredentials>> {
     return this.http
-      .post<Response<AuthCredentials>>(`${this.baseUrl}/login`, user, {
+      .post<ApiResponse<AuthCredentials>>(`${this.baseUrl}/login`, user, {
         withCredentials: true,
       })
       .pipe(
@@ -37,8 +37,10 @@ export class AuthService {
       );
   }
 
-  RegisterUser(user: AuthCredentials): Observable<Response<AuthCredentials>> {
-    return this.http.post<Response<AuthCredentials>>(
+  RegisterUser(
+    user: AuthCredentials
+  ): Observable<ApiResponse<AuthCredentials>> {
+    return this.http.post<ApiResponse<AuthCredentials>>(
       `${this.baseUrl}/register`,
       user,
       {
@@ -48,8 +50,20 @@ export class AuthService {
   }
 
   LogoutUser() {
-    this.http.post<Response<AuthCredentials>>(`${this.baseUrl}/logout`, {}, {});
+    this.http.post<ApiResponse<AuthCredentials>>(
+      `${this.baseUrl}/logout`,
+      {},
+      {}
+    );
     localStorage.removeItem('access_token');
+  }
+
+  ResetPassword(email: string): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(
+      `${this.baseUrl}/reset-password`,
+      { email },
+      {}
+    );
   }
 
   IsAuthenticated() {
@@ -64,5 +78,14 @@ export class AuthService {
       }
     }
     return value;
+  }
+
+  GetUserId() {
+    let userId;
+    let token = localStorage.getItem('access_token');
+    if (token) {
+      userId = jwtDecode(token)?.sub;
+    }
+    return userId;
   }
 }
