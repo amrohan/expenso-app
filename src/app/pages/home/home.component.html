@@ -64,7 +64,7 @@
     <main class="h-full p-3 min-h-screen mb-20">
       @for (item of transaction.data; track $index) {
       <div
-        [routerLink]="['/transaction', item.id]"
+        [routerLink]="['/edit', item.id]"
         routerLinkActive="active"
         class="cursor-pointer w-full mt-2 flex items-center max-h-16 bg-slate-50 dark:bg-zinc-900 dark:text-slate-100 rounded-md shadow-sm border border-gray-500 dark:border-zinc-800"
       >
