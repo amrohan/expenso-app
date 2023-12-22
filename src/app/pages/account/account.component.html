@@ -1,0 +1,112 @@
+<app-layout>
+  <section class="p-4">
+    <div class="flex justify-between items-center h-14 w-full">
+      <h1 class="text-2xl font-semibold text-zinc-800 dark:text-slate-100">
+        Account
+      </h1>
+
+      <button
+        (click)="onAdd()"
+        class="py-1.5 border-2 px-5 rounded-md bg-zinc-900 text-white dark:bg-slate-300 dark:text-black dark:border-black border-white"
+      >
+        Add
+      </button>
+    </div>
+    <!-- Cards of categories -->
+    <main class="h-full w-full mt-2">
+      @defer () { @if (accountList$ | async ; as account) { @for (item of
+      account.data; track item.id) {
+      <div
+        class="flex items-center h-14 border border-zinc-800 dark:border-zinc-600 rounded-md mb-3"
+      >
+        <!-- avatar -->
+        <div class="h-full w-2/12">
+          <div class="h-full w-full rounded-md grid place-content-center">
+            <span
+              class="material-symbols-outlined dark:bg-zinc-800 bg-slate-200 p-2.5 rounded-full"
+            >
+              {{ item.imageUrl }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="h-full w-8/12 flex flex-col justify-center items-start">
+          <p class="text-base">{{ item.title }}</p>
+          <p class="text-[11px]">{{ item.createdAt | date : "medium" }}</p>
+        </div>
+
+        <!-- Menu -->
+        <div class="h-full w-2/12 grid place-content-center relative">
+          <button
+            class="w-full h-full grid place-content-center relative"
+            (click)="showMenu(item.id)"
+          >
+            <span class="material-symbols-outlined"> more_horiz </span>
+            <div
+              *ngIf="isMenu === item.id"
+              class="w-[7rem] z-40 h-24 p-1.5 shadow-md dark:bg-zinc-950 bg-white text-black border border-black dark:border-zinc-500 absolute -inset-x-24 inset-y-8 rounded-md"
+            >
+              <button
+                (click)="onIconEdit(item)"
+                class="dark:text-zinc-300 text-zinc-900 flex justify-start items-center gap-1 hover:bg-[#e6e6fa] dark:hover:bg-zinc-700 hover:rounded-md p-1 h-8 w-full mt-2"
+              >
+                <span class="material-symbols-outlined"> edit </span>
+                Edit
+              </button>
+              <button
+                (click)="accountDelete(item.id)"
+                class="text-red-600 hover:bg-red-400 hover:text-black rounded-md flex justify-start items-center gap-1 hover:rounded-md p-1 h-8 w-full mt-2"
+              >
+                <span class="material-symbols-outlined"> delete </span>
+                Delete
+              </button>
+            </div>
+          </button>
+        </div>
+      </div>
+      } } } @placeholder(minimum 400ms) {
+      <h1>Placeholder</h1>
+      }@error {
+      <p class="text-white">Faild to load data</p>
+      }
+    </main>
+  </section>
+
+  <!-- Create Category -->
+
+  <app-dialog
+    [title]="titleName"
+    btnTitle="Save"
+    zIndex="z-30"
+    [isIconOpen]="isIconOpen"
+    [isDialogOpen]="isCreateAccount"
+    (closeDialogEvent)="onDialogClose($event)"
+    (confrimDialogEvent)="onDialogConfirm($event)"
+    (iconSelectEvent)="onIconSelect($event)"
+    (iconCloseEvent)="onIconClose($event)"
+  >
+    <div class="">
+      <div class="w-56 mx-auto h-full flex items-center mt-10 gap-2">
+        <button
+          (click)="isIconOpen = !isIconOpen"
+          type="button"
+          class="dark:bg-zinc-700 dark:text-zinc-300 grid place-content-center border dark:border-zinc-600 rounded-full p-2 w-10 h-10"
+        >
+          <span
+            class="material-symbols-outlined dark:text-zinc-300 text-gray-800"
+          >
+            {{ selectedIcon }}
+          </span>
+        </button>
+        <input
+          type="text"
+          [(ngModel)]="account.title"
+          name="name"
+          placeholder="Enter name"
+          class="bg-transparent w-full border-0 text-2xl border-zinc-800 dark:text-zinc-300 text-gray-800 focus:outline-none placeholder:text-3xl placeholder:dark:text-zinc-600 placeholder:dark:font-bold"
+        />
+      </div>
+    </div>
+  </app-dialog>
+</app-layout>
