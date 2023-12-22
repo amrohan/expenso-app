@@ -1,9 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { environment } from '../../environments/environment.development';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  private baseUrl = environment.backend.ApiUrl;
 
-  constructor() { }
+  private http = inject(HttpClient);
+
+  GetUserById(id: string) {}
 }

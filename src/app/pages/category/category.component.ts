@@ -18,7 +18,7 @@ import { ApiResponse } from '../../models/response.model';
 })
 export class CategoryComponent implements OnInit {
   date = new Date();
-  isMenu = false;
+  isMenu = '';
 
   // category
   isIconOpen: boolean = false;
@@ -26,6 +26,9 @@ export class CategoryComponent implements OnInit {
   selectedIcon: string = 'category';
   selectedCategory: Category | null = null;
   showCategory: boolean = false;
+  titleName = '';
+  // checking where state is create or update
+  state: boolean = true;
 
   category: Category = {
     id: '',
@@ -40,9 +43,7 @@ export class CategoryComponent implements OnInit {
   private authService = inject(AuthService);
 
   ngOnInit(): void {
-    this.categoryList$ = this.catService.GetCategoryByUserId(
-      this.authService.GetUserId()!
-    );
+    this.getUserCategories();
   }
 
   onDialogClose(value: boolean) {
@@ -50,10 +51,12 @@ export class CategoryComponent implements OnInit {
   }
 
   onDialogConfirm(value: boolean) {
-    // React to the dialog being confirmed
-    console.log('Dialog confirmed with value: ', value);
-    console.log(this.category);
     this.isCreateCategory = !this.isCreateCategory;
+    if (this.state) {
+      this.updateCategory();
+    } else {
+      this.createCategory();
+    }
   }
 
   onIconSelect(value: string) {
@@ -68,7 +71,6 @@ export class CategoryComponent implements OnInit {
     this.isIconOpen = !this.isIconOpen;
   }
 
-  //
   chooseCategory(category: Category) {
     this.selectedCategory = category;
     this.showCategory = !this.showCategory;
@@ -84,9 +86,88 @@ export class CategoryComponent implements OnInit {
 
   onIconEdit(item: Category) {
     this.isCreateCategory = !this.isCreateCategory;
-    this.isMenu = !this.isMenu;
+    this.isMenu = '';
     this.selectedCategory = item;
     this.category = item;
     this.selectedIcon = item.imageUrl;
+    this.titleName = 'Update ategory';
+    this.state = true;
+  }
+
+  onAdd() {
+    this.isCreateCategory = !this.isCreateCategory;
+    this.titleName = 'Create category';
+    this.selectedIcon = 'category';
+    this.state = false;
+  }
+
+  updateCategory() {
+    this.catService.UpdateCategory(this.category).subscribe({
+      next: (res) => {
+        this.getUserCategories();
+
+        console.log(
+          '🚀 ~ file: category.component.ts:109 ~ CategoryComponent ~ this.catService.UpdateCategory ~ i got called'
+        );
+      },
+      error: (err) => {
+        console.log(
+          '🚀 ~ file: category.component.ts:59 ~ CategoryComponent ~ this.catService.UpdateCategory ~ err:',
+          err
+        );
+      },
+    });
+  }
+
+  createCategory() {
+    this.category.userId = this.authService.GetUserId()!;
+    if (this.category.userId) {
+      this.catService.CreateCategory(this.category).subscribe({
+        next: (res) => {
+          this.getUserCategories();
+          console.log(
+            '🚀 ~ file: category.component.ts:109 ~ CategoryComponent ~ this.catService.Create ~ i got called'
+          );
+        },
+        error: (err) => {
+          console.log(
+            '🚀 ~ file: category.component.ts:86 ~ CategoryComponent ~ this.catService.CreateCategory ~ err:',
+            err
+          );
+        },
+      });
+    }
+  }
+
+  categoryDelete(id: string) {
+    if (id) {
+      this.catService.DeleteCategory(id).subscribe({
+        next: (res) => {
+          this.getUserCategories();
+        },
+        error: (err) => {
+          console.log(
+            '🚀 ~ file: category.component.ts:114 ~ CategoryComponent ~ this.catService.DeleteCategory ~ err:',
+            err
+          );
+        },
+      });
+    }
+  }
+
+  getUserCategories() {
+    this.categoryList$ = this.catService.GetCategoryByUserId(
+      this.authService.GetUserId()!
+    );
+  }
+
+  showMenu(id: string) {
+    if (this.isMenu === '') {
+      this.isMenu = id;
+      this.state = true;
+    } else {
+      this.isMenu = '';
+      this.state = true;
+    }
   }
 }

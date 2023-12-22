@@ -6,6 +6,7 @@
       </h1>
 
       <button
+        (click)="onAdd()"
         class="py-1.5 border-2 px-5 rounded-md bg-zinc-900 text-white dark:bg-slate-300 dark:text-black dark:border-black border-white"
       >
         Add
@@ -16,7 +17,7 @@
       @defer () { @if (categoryList$ | async ; as cats) { @for (item of
       cats.data; track item.id) {
       <div
-        class="flex items-center h-14 border dark:border-zinc-600 rounded-md mb-3"
+        class="flex items-center h-14 border border-zinc-800 dark:border-zinc-600 rounded-md mb-3"
       >
         <!-- avatar -->
         <div class="h-full w-2/12">
@@ -36,31 +37,32 @@
         </div>
 
         <!-- Menu -->
-        <div class="h-full w-2/12 grid place-content-center relative">
+        <div class="h-full w-2/12 grid place-content-center">
           <button
-            class="w-full h-full grid place-content-center"
-            (click)="isMenu = !isMenu"
+            class="w-full h-full grid place-content-center relative"
+            (click)="showMenu(item.id)"
           >
             <span class="material-symbols-outlined"> more_horiz </span>
+            <div
+              *ngIf="isMenu === item.id"
+              class="w-[7rem] z-40 h-24 p-1.5 shadow-md dark:bg-zinc-950 bg-white text-black border border-black dark:border-zinc-500 absolute -inset-x-24 inset-y-8 rounded-md"
+            >
+              <button
+                (click)="onIconEdit(item)"
+                class="dark:text-zinc-300 text-zinc-900 flex justify-start items-center gap-1 hover:bg-[#e6e6fa] dark:hover:bg-zinc-700 hover:rounded-md p-1 h-8 w-full mt-2"
+              >
+                <span class="material-symbols-outlined"> edit </span>
+                Edit
+              </button>
+              <button
+                (click)="categoryDelete(item.id)"
+                class="text-red-600 hover:bg-red-400 hover:text-black rounded-md flex justify-start items-center gap-1 hover:rounded-md p-1 h-8 w-full mt-2"
+              >
+                <span class="material-symbols-outlined"> delete </span>
+                Delete
+              </button>
+            </div>
           </button>
-          <div
-            *ngIf="isMenu"
-            class="w-[7rem] z-40 h-24 p-1.5 shadow-md dark:bg-zinc-950 bg-white text-black border border-black dark:border-zinc-500 absolute -inset-x-24 inset-y-10 rounded-md"
-          >
-            <button
-              (click)="onIconEdit(item)"
-              class="dark:text-zinc-300 text-zinc-900 flex justify-start items-center gap-1 hover:bg-[#e6e6fa] dark:hover:bg-zinc-700 hover:rounded-md p-1 h-8 w-full mt-2"
-            >
-              <span class="material-symbols-outlined"> edit </span>
-              Edit
-            </button>
-            <button
-              class="text-zinc-300 bg-red-600 rounded-md flex justify-start items-center gap-1 hover:rounded-md p-1 h-8 w-full mt-2"
-            >
-              <span class="material-symbols-outlined"> delete </span>
-              Delete
-            </button>
-          </div>
         </div>
       </div>
       } } } @placeholder(minimum 400ms) {
@@ -74,7 +76,7 @@
   <!-- Create Category -->
 
   <app-dialog
-    title="Update Category"
+    [title]="titleName"
     btnTitle="Save"
     zIndex="z-30"
     [isIconOpen]="isIconOpen"
