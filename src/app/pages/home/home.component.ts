@@ -2,7 +2,10 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from '../../components/layout.component';
 import { Router, RouterLink } from '@angular/router';
-import { Transaction } from '../../models/transactions.model';
+import {
+  Transaction,
+  TransactionByUsers,
+} from '../../models/transactions.model';
 import { TransactionService } from '../../services/transaction.service';
 import { CategoryService } from '../../services/category.service';
 import { AccountService } from '../../services/account.service';
@@ -39,7 +42,7 @@ export class HomeComponent implements OnInit {
   private readonly authService = inject(AuthService);
 
   data: Transaction[] = [];
-  transaction$: Observable<ApiResponse<Transaction[]>>;
+  transaction$: Observable<ApiResponse<TransactionByUsers>>;
   ngOnInit(): void {
     this.transaction$ = this.transactionService.GetCurrentTransactionByUserID(
       '12',

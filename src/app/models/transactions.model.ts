@@ -14,3 +14,13 @@ export type Transaction = {
   isDeleted?: boolean;
   isActive?: boolean;
 };
+
+export type TransactionByUsers = {
+  summary: Summary;
+  transaction: Transaction[];
+};
+
+export type Summary = {
+  totalExpense: number;
+  totalIncome: number;
+};

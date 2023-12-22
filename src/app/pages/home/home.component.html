@@ -1,5 +1,7 @@
 <app-layout>
   <!-- Transactions -->
+
+  @if (transaction$ |async ; as transaction) {
   <section class="p-3">
     <h1 class="text-xl dark:text-slate-100 mb-4">Hello Rohan</h1>
     <main class="flex justify-center items-center gap-2">
@@ -11,7 +13,9 @@
         >
           Income
         </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">123</p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          {{ transaction.data.summary.totalIncome }}
+        </p>
       </div>
       <div
         class="block max-w-sm min-w-[10rem] p-4 bg-[#f8f8ff] border border-black rounded-lg shadow hover:bg-gray-100 dark:bg-zinc-900 dark:border-zinc-700"
@@ -21,7 +25,9 @@
         >
           Expense
         </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">200</p>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+          {{ transaction.data.summary.totalExpense }}
+        </p>
       </div>
     </main>
   </section>
@@ -59,10 +65,8 @@
       </div>
     </div>
 
-    @if (transaction$ |async ; as transaction) {
-
     <main class="h-full p-3 min-h-screen mb-20">
-      @for (item of transaction.data; track $index) {
+      @for (item of transaction.data.transaction; track $index) {
       <div
         [routerLink]="['/edit', item.id]"
         routerLinkActive="active"
@@ -108,9 +112,6 @@
       </div>
       }
     </main>
-    }@else{
-    <p>loading</p>
-    }
 
     <!-- Add button -->
     <div
@@ -143,4 +144,5 @@
       </button>
     </div>
   </section>
+  }
 </app-layout>

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { Observable } from 'rxjs';
-import { Transaction } from '../models/transactions.model';
+import { Transaction, TransactionByUsers } from '../models/transactions.model';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '../models/response.model';
 
@@ -32,8 +32,8 @@ export class TransactionService {
     month: string,
     year: string,
     userId: string
-  ): Observable<ApiResponse<Transaction[]>> {
-    return this.http.get<ApiResponse<Transaction[]>>(
+  ): Observable<ApiResponse<TransactionByUsers>> {
+    return this.http.get<ApiResponse<TransactionByUsers>>(
       `${this.baseUrl}/api/transaction/u/${month}-${year}-${userId}`,
       { withCredentials: true }
     );
