@@ -64,7 +64,7 @@ export class TransactionComponent implements OnInit {
     id: '',
     title: '',
     amount: 0,
-    date: this.date || new Date(),
+    date: this.date || new Date().toUTCString(),
     type: '',
     imageUrl: '',
     categoryId: '',
@@ -223,7 +223,8 @@ export class TransactionComponent implements OnInit {
 
     if (/^\d{4}-\d{2}-\d{2}$/.test(String(this.transaction.date))) {
       let ldate = date.parse(String(this.transaction.date), 'YYYY-MM-DD');
-      this.transaction.date = ldate;
+      let isoDateStr = ldate.toISOString();
+      this.transaction.date = new Date(isoDateStr);
     } else {
       console.log('The date string is not in the format YYYY-MM-DD.');
     }

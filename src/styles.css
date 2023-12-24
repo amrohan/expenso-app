@@ -46,3 +46,7 @@ input[type="number"] {
 ::-webkit-scrollbar {
   display: none;
 }
+
+li {
+  text-decoration: none;
+}

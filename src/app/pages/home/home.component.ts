@@ -16,6 +16,8 @@ import { Category } from '../../models/category.model';
 import { Account } from '../../models/account.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../models/response.model';
+import { FormsModule } from '@angular/forms';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -26,14 +28,22 @@ import { ApiResponse } from '../../models/response.model';
     RouterLink,
     AccountPipe,
     CategoryPipe,
+    FormsModule,
   ],
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
   isMenu: boolean = false;
+  date: Date = new Date();
   categoryList: Category[] = [];
-
   accountList: Account[] = [];
+  transactions: TransactionByUsers = {
+    summary: {
+      totalExpense: 0,
+      totalIncome: 0,
+    },
+    transaction: [],
+  };
 
   private readonly router = inject(Router);
   private readonly transactionService = inject(TransactionService);
@@ -43,12 +53,9 @@ export class HomeComponent implements OnInit {
 
   data: Transaction[] = [];
   transaction$: Observable<ApiResponse<TransactionByUsers>>;
+
   ngOnInit(): void {
-    this.transaction$ = this.transactionService.GetCurrentTransactionByUserID(
-      '12',
-      '2023',
-      this.authService.GetUserId()!
-    );
+    this.getMonthandYear();
 
     this.getAllCategoryAndAccount(this.authService.GetUserId()!);
   }
@@ -76,5 +83,32 @@ export class HomeComponent implements OnInit {
       },
       error: (err) => {},
     });
+  }
+
+  getUserTransactions(month: string, year: string) {
+    this.transactionService
+      .GetCurrentTransactionByUserID(month, year, this.authService.GetUserId()!)
+      .subscribe({
+        next: (res) => {
+          this.transactions = res.data;
+          console.log(
+            '🚀 ~ file: home.component.ts:102 ~ HomeComponent ~ getUserTransactions ~ res:',
+            res
+          );
+        },
+        error: (err) => {
+          console.log(
+            '🚀 ~ file: home.component.ts:95 ~ HomeComponent ~ getUserTransactions ~ err:',
+            err
+          );
+        },
+      });
+  }
+
+  getMonthandYear() {
+    this.date = new Date(this.date);
+    let month = this.date.getMonth() + 1; // getMonth() returns month from 0 to 11
+    let year = this.date.getFullYear();
+    this.getUserTransactions(month.toString(), year.toString());
   }
 }
