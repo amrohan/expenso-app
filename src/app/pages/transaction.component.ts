@@ -80,6 +80,7 @@ export class TransactionComponent implements OnInit {
 
   // Injection
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly transactionService = inject(TransactionService);
   private readonly categoryService = inject(CategoryService);
@@ -231,12 +232,16 @@ export class TransactionComponent implements OnInit {
 
     if (transactionType) {
       this.transactionService.CreateTransaction(this.transaction).subscribe({
-        next: (res) => {},
+        next: (res) => {
+          this.router.navigate(['/']);
+        },
         error: (err) => {},
       });
     } else {
       this.transactionService.UpdateTransaction(this.transaction).subscribe({
-        next: (res) => {},
+        next: (res) => {
+          this.router.navigate(['/']);
+        },
         error: (err) => {},
       });
     }

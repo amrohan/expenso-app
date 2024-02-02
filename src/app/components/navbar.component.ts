@@ -10,10 +10,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
   template: `
     <div class="flex justify-between w-full items-center p-2 ">
       <!-- Routes -->
+      @if(activeRoute !== 'edit' && activeRoute !== 'add'){
+
       <div
         class="flex justify-start items-center gap-1 text-sm dark:bg-zinc-900 bg-slate-200 rounded-md p-1"
       >
-        <p
+        <a
           routerLink="/"
           [ngClass]="{
             'dark:bg-zinc-700 bg-slate-50 rounded-md': activeRoute === ''
@@ -21,8 +23,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
           class="p-2"
         >
           Transaction
-        </p>
-        <p
+        </a>
+        <a
           routerLink="/category"
           [ngClass]="{
             'dark:bg-zinc-700 bg-slate-50  rounded-md':
@@ -31,8 +33,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
           class="p-2"
         >
           Category
-        </p>
-        <p
+        </a>
+        <a
           routerLink="/account"
           [ngClass]="{
             'dark:bg-zinc-700 bg-slate-50 rounded-md': activeRoute === 'account'
@@ -40,7 +42,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
           class="p-2"
         >
           Account
-        </p>
+        </a>
       </div>
       <div class="flex justify-end items-center w-full">
         @if (themeService.isDarkMode()) {
@@ -81,6 +83,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
         </button>
         }
       </div>
+      }
     </div>
   `,
   styles: ``,
@@ -93,6 +96,10 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.route.url.subscribe((url) => {
       this.activeRoute = url[0].path;
+      console.log(
+        '🚀 ~ NavbarComponent ~ this.route.url.subscribe ~ url[0].path:',
+        url[0].path
+      );
     });
   }
 }
