@@ -55,7 +55,22 @@ export class HomeComponent implements OnInit {
   transaction$: Observable<ApiResponse<TransactionByUsers>>;
 
   ngOnInit(): void {
-    this.getMonthandYear();
+    if (this.authService.GetUserId() === null) {
+      return;
+    }
+
+    // get month and year from local storage
+    if (
+      localStorage.getItem('month') === null ||
+      localStorage.getItem('year') === null
+    ) {
+      this.getMonthandYear();
+    } else {
+      const m = localStorage.getItem('month');
+      const y = localStorage.getItem('year');
+      this.getUserTransactions(m!, y!);
+      this.date = new Date(parseInt(y!), parseInt(m!) - 1);
+    }
 
     this.getAllCategoryAndAccount(this.authService.GetUserId()!);
   }
@@ -86,6 +101,10 @@ export class HomeComponent implements OnInit {
   }
 
   getUserTransactions(month: string, year: string) {
+    if (this.authService.GetUserId() === null) {
+      return;
+    }
+
     this.transactionService
       .GetCurrentTransactionByUserID(month, year, this.authService.GetUserId()!)
       .subscribe({
@@ -107,8 +126,10 @@ export class HomeComponent implements OnInit {
 
   getMonthandYear() {
     this.date = new Date(this.date);
-    let month = this.date.getMonth() + 1; // getMonth() returns month from 0 to 11
+    let month = this.date.getMonth() + 1;
     let year = this.date.getFullYear();
+    localStorage.setItem('month', month.toString());
+    localStorage.setItem('year', year.toString());
     this.getUserTransactions(month.toString(), year.toString());
   }
 }

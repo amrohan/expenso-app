@@ -29,10 +29,7 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          localStorage.setItem(
-            'access_token',
-            JSON.stringify(response.data.token)
-          );
+          localStorage.setItem('token', JSON.stringify(response.data));
         })
       );
   }
@@ -56,7 +53,7 @@ export class AuthService {
       {}
     );
 
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('token');
   }
 
   ResetPassword(email: string): Observable<ApiResponse<any>> {
@@ -69,7 +66,7 @@ export class AuthService {
 
   IsAuthenticated() {
     let value = false;
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('token');
     if (token) {
       const decoded = jwtDecode(token);
       if (decoded.exp) {
@@ -83,9 +80,13 @@ export class AuthService {
 
   GetUserId() {
     let userId;
-    let token = localStorage.getItem('access_token');
+    let token = localStorage.getItem('token');
     if (token) {
       userId = jwtDecode(token)?.sub;
+      console.log(
+        '🚀 ~ file: auth.service.ts:86 ~ AuthService ~ GetUserId ~ userId:',
+        userId
+      );
     }
     return userId;
   }

@@ -14,8 +14,8 @@
     </div>
     <!-- Cards of categories -->
     <main class="h-full w-full mt-2">
-      @defer () { @if (categoryList$ | async ; as cats) { @for (item of
-      cats.data; track item.id) {
+      @defer { @if (categoryList$ | async; as cats) { @for (item of cats.data;
+      track item.id) {
       <div
         class="flex items-center h-14 border border-zinc-800 dark:border-zinc-600 rounded-md mb-3"
       >
@@ -65,9 +65,9 @@
           </button>
         </div>
       </div>
-      } } } @placeholder(minimum 400ms) {
+      } } } @placeholder (minimum 400ms) {
       <h1>Placeholder</h1>
-      }@error {
+      } @error {
       <p class="text-white">Faild to load data</p>
       }
     </main>
