@@ -83,10 +83,6 @@ export class AuthService {
     let token = localStorage.getItem('token');
     if (token) {
       userId = jwtDecode(token)?.sub;
-      console.log(
-        '🚀 ~ file: auth.service.ts:86 ~ AuthService ~ GetUserId ~ userId:',
-        userId
-      );
     }
     return userId;
   }

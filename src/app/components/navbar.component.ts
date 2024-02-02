@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../services/theme.service';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +11,36 @@ import { RouterLink } from '@angular/router';
     <div class="flex justify-between w-full items-center p-2 ">
       <!-- Routes -->
       <div
-        class="flex justify-start items-center gap-1 text-sm dark:bg-zinc-800 rounded-md p-1"
+        class="flex justify-start items-center gap-1 text-sm dark:bg-zinc-900 bg-slate-200 rounded-md p-1"
       >
-        <p routerLink="/" class="">Transaction</p>
-        <p routerLink="/category">Category</p>
-        <p routerLink="/account">Account</p>
+        <p
+          routerLink="/"
+          [ngClass]="{
+            'dark:bg-zinc-700 bg-slate-50 rounded-md': activeRoute === ''
+          }"
+          class="p-2"
+        >
+          Transaction
+        </p>
+        <p
+          routerLink="/category"
+          [ngClass]="{
+            'dark:bg-zinc-700 bg-slate-50  rounded-md':
+              activeRoute === 'category'
+          }"
+          class="p-2"
+        >
+          Category
+        </p>
+        <p
+          routerLink="/account"
+          [ngClass]="{
+            'dark:bg-zinc-700 bg-slate-50 rounded-md': activeRoute === 'account'
+          }"
+          class="p-2"
+        >
+          Account
+        </p>
       </div>
       <div class="flex justify-end items-center w-full">
         @if (themeService.isDarkMode()) {
@@ -60,6 +85,14 @@ import { RouterLink } from '@angular/router';
   `,
   styles: ``,
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   public readonly themeService = inject(ThemeService);
+  route = inject(ActivatedRoute);
+
+  activeRoute: string = '';
+  ngOnInit() {
+    this.route.url.subscribe((url) => {
+      this.activeRoute = url[0].path;
+    });
+  }
 }
