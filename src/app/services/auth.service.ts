@@ -5,7 +5,7 @@ import { ApiResponse } from '../models/response.model';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { AuthCredentials } from '../models/auth.model';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
