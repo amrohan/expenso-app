@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/user.model';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProfileComponent implements OnInit {
   userService = inject(UserService);
+  toast = inject(ToastService);
   auth = inject(AuthService);
 
   usernameExists: string = '';
@@ -27,7 +29,8 @@ export class ProfileComponent implements OnInit {
   updateUser() {
     this.userService.UpdateUser(this.user).subscribe({
       next: (user) => {
-        console.log(user);
+        this.user = user.data;
+        this.toast.Success('Profile updated successfully');
       },
       error: (err) => {
         console.log(err);
@@ -74,13 +77,14 @@ export class ProfileComponent implements OnInit {
 
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files![0];
-
     this.userService.UploadProfileImage(file).subscribe({
       next: (res) => {
         console.log(res);
         this.user.imageUrl = res.secure_url;
+        this.toast.Success('Profile image uploaded successfully');
       },
       error: (err) => {
+        this.toast.Error('Error uploading profile image');
         console.log(err);
       },
     });

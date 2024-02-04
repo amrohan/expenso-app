@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/user.model';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit {
 
   private auth = inject(AuthService);
   private route = inject(Router);
+  private toast = inject(ToastService);
 
   ngOnInit(): void {
     if (this.auth.IsAuthenticated()) {
@@ -52,8 +54,10 @@ export class LoginComponent implements OnInit {
     this.auth.LoginUser(this.userCredentials).subscribe({
       next: (res) => {
         this.isLoading = !this.isLoading;
+        this.toast.Success('Login successful');
         if (res.status === 200) {
           this.route.navigate(['/']);
+          return;
         }
       },
       error: (error) => {
@@ -62,6 +66,7 @@ export class LoginComponent implements OnInit {
         } else {
           this.showErrorMessage(error.error.message);
         }
+        this.toast.Error('Login failed');
         this.isLoading = !this.isLoading;
       },
     });
