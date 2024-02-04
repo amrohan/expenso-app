@@ -1,0 +1,142 @@
+<app-layout>
+  <div
+    class="flex flex-col items-center justify-center min-h-svh dark:bg-black"
+  >
+    <div class="rounded-lg w-full max-w-lg p-4 mx-2">
+      <!-- Profile -->
+      <div class="flex flex-col space-y-1.5 p-6">
+        <h3
+          class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight text-center"
+        >
+          Profile Settings
+        </h3>
+        <p class="text-sm text-muted-foreground text-center">
+          Update your profile information.
+        </p>
+      </div>
+      <!-- UserInfo -->
+      <div class="p-6 space-y-4">
+        <div class="flex flex-col items-center space-y-2">
+          @if (user.imageUrl) {
+          <span
+            class="relative flex shrink-0 overflow-hidden rounded-full h-24 w-24"
+            ><img
+              src="{{ user.imageUrl }}"
+              class="flex h-full w-full items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-700"
+            />
+            <input
+              type="file"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+            />
+            ></span
+          >
+          }@else {
+          <span
+            class="relative shrink-0 overflow-hidden rounded-full h-24 w-24 grid place-content-center border dark:border-zinc-700 dark:bg-zinc-800 bg-zinc-100"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-upload-cloud"
+            >
+              <path
+                d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"
+              />
+              <path d="M12 12v9" />
+              <path d="m16 16-4-4-4 4" />
+            </svg>
+            <input
+              type="file"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+            />
+          </span>
+          }
+
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mt-1"
+            for="file"
+            >Change Profile Picture</label
+          >
+        </div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="username"
+            >Username</label
+          >
+          <input
+            class="flex h-10 w-full rounded-md border dark:border-zinc-700 dark:bg-zinc-900 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="username"
+            [(ngModel)]="user.username"
+            placeholder="Enter your username"
+            (ngModelChange)="checkUserName($event)"
+          />
+          @if (usernameExists) {
+          <span class="text-black dark:text-slate-50 text-xs mt-1">{{
+            usernameExists
+          }}</span>
+          }
+        </div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="name"
+            >Name</label
+          ><input
+            class="flex h-10 w-full rounded-md border dark:border-zinc-700 dark:bg-zinc-900 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="name"
+            [(ngModel)]="user.name"
+            placeholder="Enter your name"
+          />
+        </div>
+        <div class="space-y-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
+            for="email"
+            >Email</label
+          >
+          <input
+            class="flex h-10 w-full rounded-md border dark:border-zinc-700 dark:bg-zinc-900 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="email"
+            placeholder="Enter your email"
+            type="email"
+            [(ngModel)]="user.email"
+            disabled="true"
+          />
+        </div>
+        <!-- <div class="space-y-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            for="password"
+            >Password</label
+          ><input
+            class="flex h-10 w-full rounded-md border dark:border-zinc-700 dark:bg-zinc-900 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="password"
+            placeholder="Enter your password"
+            type="password"
+            [(ngModel)]="user.password"
+          />
+        </div> -->
+      </div>
+      <div class="flex items-center p-6">
+        <button
+          (click)="updateUser()"
+          class="inline-flex bg-black text-white dark:bg-white dark:text-black items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</app-layout>

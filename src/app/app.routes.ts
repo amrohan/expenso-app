@@ -6,13 +6,19 @@ import { LoginComponent } from './pages/login.component';
 import { SignupComponent } from './pages/signup.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { AccountComponent } from './pages/account/account.component';
+import { ProfileComponent } from './pages/profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [authGuard] },
-  { path: 'edit/:id', component: TransactionComponent },
-  { path: 'add', component: TransactionComponent },
-  { path: 'category', component: CategoryComponent },
-  { path: 'account', component: AccountComponent },
+  {
+    path: 'edit/:id',
+    component: TransactionComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'add', component: TransactionComponent, canActivate: [authGuard] },
+  { path: 'category', component: CategoryComponent, canActivate: [authGuard] },
+  { path: 'account', component: AccountComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
 ];

@@ -12,3 +12,7 @@ export type User = {
   isActive?: boolean;
   isVerified?: boolean;
 };
+
+export type cloudinary = {
+  secure_url: string;
+};
