@@ -17,9 +17,9 @@ import { AuthService } from '../services/auth.service';
         class="flex justify-start items-center gap-1 text-sm dark:bg-zinc-900 bg-slate-200 rounded-md p-1"
       >
         <a
-          routerLink="/"
+          routerLink="/home"
           [ngClass]="{
-            'dark:bg-zinc-700 bg-slate-50 rounded-md': activeRoute === ''
+            'dark:bg-zinc-700 bg-slate-50 rounded-md': activeRoute === 'home'
           }"
           class="p-2"
         >

@@ -7,9 +7,19 @@ import { SignupComponent } from './pages/signup.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { AccountComponent } from './pages/account/account.component';
 import { ProfileComponent } from './pages/profile.component';
+import { AppComponent } from './app.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [authGuard] },
+  {
+    path: '',
+    component: AppComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [authGuard],
+  },
   {
     path: 'edit/:id',
     component: TransactionComponent,

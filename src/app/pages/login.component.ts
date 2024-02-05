@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.IsAuthenticated()) {
-      this.route.navigate(['/']);
+      this.route.navigate(['/home']);
     }
   }
 
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
         this.isLoading = !this.isLoading;
         this.toast.Success('Login successful');
         if (res.status === 200) {
-          this.route.navigate(['/']);
+          this.route.navigate(['/home']);
           return;
         }
       },
