@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { ApiResponse } from '../../models/response.model';
 import { AccountService } from '../../services/account.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-account',
@@ -37,10 +38,12 @@ export class AccountComponent {
     userId: '',
   };
 
+  accountList: Account[] = [];
   accountList$: Observable<ApiResponse<Account[]>>;
 
   private accountService = inject(AccountService);
   private authService = inject(AuthService);
+  private toast = inject(ToastService);
 
   ngOnInit(): void {
     this.getUserAccounts();
@@ -104,17 +107,10 @@ export class AccountComponent {
   updateAccount() {
     this.accountService.UpdateAccount(this.account).subscribe({
       next: (res) => {
-        this.getUserAccounts();
-
-        console.log(
-          '🚀 ~ file: category.component.ts:109 ~ CategoryComponent ~ this.catService.UpdateCategory ~ i got called'
-        );
+        this.toast.Success('Account updated');
       },
       error: (err) => {
-        console.log(
-          '🚀 ~ file: category.component.ts:59 ~ CategoryComponent ~ this.catService.UpdateCategory ~ err:',
-          err
-        );
+        this.toast.Error('Error updating account');
       },
     });
   }
@@ -124,16 +120,11 @@ export class AccountComponent {
     if (this.account.userId) {
       this.accountService.CreateAccount(this.account).subscribe({
         next: (res) => {
-          this.getUserAccounts();
-          console.log(
-            '🚀 ~ file: category.component.ts:109 ~ CategoryComponent ~ this.catService.Create ~ i got called'
-          );
+          this.accountList.push(res.data);
+          this.toast.Success('Account created');
         },
         error: (err) => {
-          console.log(
-            '🚀 ~ file: category.component.ts:86 ~ CategoryComponent ~ this.catService.CreateCategory ~ err:',
-            err
-          );
+          this.toast.Error('Error creating account');
         },
       });
     }
@@ -143,13 +134,11 @@ export class AccountComponent {
     if (id) {
       this.accountService.DeleteAccount(id).subscribe({
         next: (res) => {
-          this.getUserAccounts();
+          this.accountList = this.accountList.filter((item) => item.id !== id);
+          this.toast.Success('Account deleted');
         },
         error: (err) => {
-          console.log(
-            '🚀 ~ file: category.component.ts:114 ~ CategoryComponent ~ this.catService.DeleteCategory ~ err:',
-            err
-          );
+          this.toast.Error('Error deleting account');
         },
       });
     }
@@ -159,6 +148,16 @@ export class AccountComponent {
     this.accountList$ = this.accountService.GetAccountByUserId(
       this.authService.GetUserId()!
     );
+    this.accountService
+      .GetAccountByUserId(this.authService.GetUserId()!)
+      .subscribe({
+        next: (res) => {
+          this.accountList = res.data;
+        },
+        error: (err) => {
+          this.toast.Error('Error fetching accounts');
+        },
+      });
   }
 
   showMenu(id: string) {

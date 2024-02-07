@@ -15,6 +15,7 @@ import date from 'date-and-time';
 import { CategoryPipe } from '../category.pipe';
 import { AccountPipe } from '../account.pipe';
 import { IdtoiconPipe } from '../idtoicon.pipe';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-transaction',
@@ -85,6 +86,7 @@ export class TransactionComponent implements OnInit {
   private readonly transactionService = inject(TransactionService);
   private readonly categoryService = inject(CategoryService);
   private readonly accountService = inject(AccountService);
+  private readonly toast = inject(ToastService);
 
   ngOnInit(): void {
     const data = this.route.snapshot.paramMap.get('id');
@@ -146,18 +148,24 @@ export class TransactionComponent implements OnInit {
       : (this.showCategory = this.showCategory);
   }
 
-  onSubmit() {}
-
   // Acccount
   onAccountDialogClose(value: boolean) {
     value ? (this.isCreateAcccount = false) : (this.isCreateAcccount = true);
   }
 
   onAccountDialogConfirm(value: boolean) {
-    // React to the dialog being confirmed
-    console.log('Dialog confirmed with value: ', value);
-    console.log(this.account);
     this.isCreateAcccount = !this.isCreateAcccount;
+    this.account.userId = this.authService.GetUserId()!;
+
+    this.accountService.CreateAccount(this.account).subscribe({
+      next: (res) => {
+        this.account.id = res.data.id;
+        this.accountList.push(this.account);
+      },
+      error: (err) => {
+        this.toast.Error('Error creating account');
+      },
+    });
   }
 
   onAccountIconOpen(value: string) {
@@ -173,9 +181,18 @@ export class TransactionComponent implements OnInit {
 
   onDialogConfirm(value: boolean) {
     // React to the dialog being confirmed
-    console.log('Dialog confirmed with value: ', value);
-    console.log(this.category);
     this.isCreateCategory = !this.isCreateCategory;
+    this.category.userId = this.authService.GetUserId()!;
+
+    this.categoryService.CreateCategory(this.category).subscribe({
+      next: (res) => {
+        this.category.id = res.data.id;
+        this.categoryList.push();
+      },
+      error: (err) => {
+        this.toast.Error('Error creating category');
+      },
+    });
   }
 
   // Icons Emitters
@@ -233,24 +250,35 @@ export class TransactionComponent implements OnInit {
     if (transactionType) {
       this.transactionService.CreateTransaction(this.transaction).subscribe({
         next: (res) => {
+          this.toast.Success('Transaction created successfully');
           this.router.navigate(['/home']);
         },
-        error: (err) => {},
+        error: (err) => {
+          this.toast.Error('Error creating transaction');
+        },
       });
     } else {
       this.transactionService.UpdateTransaction(this.transaction).subscribe({
         next: (res) => {
+          this.toast.Success('Transaction updated successfully');
           this.router.navigate(['/home']);
         },
-        error: (err) => {},
+        error: (err) => {
+          this.toast.Error('Error updating transaction');
+        },
       });
     }
   }
 
   deleteTransaction(id: string) {
     this.transactionService.DeleteTransaction(id).subscribe({
-      next: (res) => {},
-      error: (err) => {},
+      next: (res) => {
+        this.toast.Success('Transaction deleted successfully');
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        this.toast.Error('Error deleting transaction');
+      },
     });
   }
 
@@ -279,7 +307,9 @@ export class TransactionComponent implements OnInit {
       next: (res) => {
         this.transaction = res.data;
       },
-      error: (err) => {},
+      error: (err) => {
+        this.toast.Error('Error fetching transaction');
+      },
     });
   }
 }

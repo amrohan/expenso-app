@@ -37,7 +37,7 @@ export class AccountService {
 
   UpdateAccount(account: Account): Observable<ApiResponse<Account>> {
     return this.http.put<ApiResponse<Account>>(
-      `${this.baseUrl}/api/account}`,
+      `${this.baseUrl}/api/account`,
       account,
       { withCredentials: true }
     );

@@ -14,10 +14,10 @@
     </div>
     <!-- Cards of categories -->
     <main class="h-full w-full mt-2">
-      @defer () { @if (accountList$ | async ; as account) { @for (item of
-      account.data; track item.id) {
+      @defer () { @if (accountList) { @for (item of accountList; track item.id)
+      {
       <div
-        class="flex animate-fade items-center h-14 border border-zinc-800 dark:border-zinc-600 rounded-md mb-3"
+        class="flex animate-fade items-center h-14 justify-start rounded-md mb-4"
       >
         <!-- avatar -->
         <div class="h-full w-2/12">
@@ -39,13 +39,14 @@
         <!-- Menu -->
         <div class="h-full w-2/12 grid place-content-center relative">
           <button
-            class="w-full h-full grid place-content-center relative"
+            class="w-full h-full grid place-content-center"
             (click)="showMenu(item.id)"
           >
             <span class="material-symbols-outlined"> more_horiz </span>
+          </button>
+          <ng-container *ngIf="isMenu === item.id">
             <div
-              *ngIf="isMenu === item.id"
-              class="w-[7rem] z-40 h-24 p-1.5 shadow-md dark:bg-zinc-950 bg-white text-black border border-black dark:border-zinc-500 absolute -inset-x-24 inset-y-8 rounded-md"
+              class="w-[7rem] h-24 p-1.5 shadow-2xl z-50 dark:bg-zinc-800 bg-white text-black border border-black dark:border-zinc-500 absolute -inset-x-20 inset-y-8 rounded-md"
             >
               <button
                 (click)="onIconEdit(item)"
@@ -62,7 +63,7 @@
                 Delete
               </button>
             </div>
-          </button>
+          </ng-container>
         </div>
       </div>
       } } } @placeholder(minimum 400ms) {

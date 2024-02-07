@@ -11,7 +11,7 @@ export class ToastService {
 
   toastConfig = {
     duration: 2000,
-    position: 'top-right' as ToastPosition,
+    position: 'top-center' as ToastPosition,
     style: {
       border: '1px solid #27272A',
       borderRadius: '12px',

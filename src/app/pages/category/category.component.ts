@@ -8,6 +8,7 @@ import { CategoryService } from '../../services/category.service';
 import { AuthService } from '../../services/auth.service';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../../models/response.model';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-category',
@@ -37,10 +38,11 @@ export class CategoryComponent implements OnInit {
     userId: '',
   };
 
-  categoryList$: Observable<ApiResponse<Category[]>>;
+  categoryList: Category[] = [];
 
   private catService = inject(CategoryService);
   private authService = inject(AuthService);
+  private toast = inject(ToastService);
 
   ngOnInit(): void {
     this.getUserCategories();
@@ -104,17 +106,10 @@ export class CategoryComponent implements OnInit {
   updateCategory() {
     this.catService.UpdateCategory(this.category).subscribe({
       next: (res) => {
-        this.getUserCategories();
-
-        console.log(
-          '🚀 ~ file: category.component.ts:109 ~ CategoryComponent ~ this.catService.UpdateCategory ~ i got called'
-        );
+        this.toast.Success('Category updated successfully');
       },
       error: (err) => {
-        console.log(
-          '🚀 ~ file: category.component.ts:59 ~ CategoryComponent ~ this.catService.UpdateCategory ~ err:',
-          err
-        );
+        this.toast.Error('Error updating category');
       },
     });
   }
@@ -124,16 +119,11 @@ export class CategoryComponent implements OnInit {
     if (this.category.userId) {
       this.catService.CreateCategory(this.category).subscribe({
         next: (res) => {
-          this.getUserCategories();
-          console.log(
-            '🚀 ~ file: category.component.ts:109 ~ CategoryComponent ~ this.catService.Create ~ i got called'
-          );
+          this.categoryList.push(res.data);
+          this.toast.Success('Category created successfully');
         },
         error: (err) => {
-          console.log(
-            '🚀 ~ file: category.component.ts:86 ~ CategoryComponent ~ this.catService.CreateCategory ~ err:',
-            err
-          );
+          this.toast.Error('Error creating category');
         },
       });
     }
@@ -143,22 +133,27 @@ export class CategoryComponent implements OnInit {
     if (id) {
       this.catService.DeleteCategory(id).subscribe({
         next: (res) => {
-          this.getUserCategories();
+          this.toast.Success('Category deleted successfully');
+          this.categoryList = this.categoryList.filter((x) => x.id !== id);
         },
         error: (err) => {
-          console.log(
-            '🚀 ~ file: category.component.ts:114 ~ CategoryComponent ~ this.catService.DeleteCategory ~ err:',
-            err
-          );
+          this.toast.Error('Error deleting category');
         },
       });
     }
   }
 
   getUserCategories() {
-    this.categoryList$ = this.catService.GetCategoryByUserId(
-      this.authService.GetUserId()!
-    );
+    this.catService
+      .GetCategoryByUserId(this.authService.GetUserId()!)
+      .subscribe({
+        next: (res) => {
+          this.categoryList = res.data;
+        },
+        error: (err) => {
+          this.toast.Error('Error fetching category');
+        },
+      });
   }
 
   showMenu(id: string) {
