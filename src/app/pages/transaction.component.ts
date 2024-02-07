@@ -233,14 +233,14 @@ export class TransactionComponent implements OnInit {
     if (transactionType) {
       this.transactionService.CreateTransaction(this.transaction).subscribe({
         next: (res) => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/home']);
         },
         error: (err) => {},
       });
     } else {
       this.transactionService.UpdateTransaction(this.transaction).subscribe({
         next: (res) => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/home']);
         },
         error: (err) => {},
       });
