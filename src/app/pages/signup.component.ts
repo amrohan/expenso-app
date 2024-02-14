@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.auth.IsAuthenticated()) {
-      this.route.navigate(['/']);
+      this.route.navigate(['/home']);
     }
   }
 
@@ -81,7 +81,7 @@ export class SignupComponent implements OnInit {
             this.auth.LoginUser(this.loginCredentials).subscribe({
               next: (res) => {
                 this.isLoading = !this.isLoading;
-                this.route.navigate(['/']);
+                this.route.navigate(['/home']);
               },
               error: (err) => {
                 alert('Something went wrong');
